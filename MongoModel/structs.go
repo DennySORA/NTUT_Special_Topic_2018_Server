@@ -1,9 +1,12 @@
 package MongoModel
 
-type Registers struct {
-	CreateTime  string
-	RefreshTime string
-	AccountID   string
-	Password    string
-	IsVerify    bool
+import Base "sega/Base"
+
+type Users struct {
+	Email		  string
+	Car           []Base.CarData
+	Profile       Base.Profiles
+	Accesse       Base.Accesses
+	SiginHistory  Base.Historys
+	LogoutHistory Base.Historys
 }

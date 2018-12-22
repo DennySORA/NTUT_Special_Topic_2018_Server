@@ -3,6 +3,7 @@ package GraphQLModel
 import (
 	"context"
 	"sega/Base"
+	"sega/MongoModel"
 )
 
 // ===============================================================================
@@ -31,7 +32,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, Token Base.InputToken
 // ============================================[Account]
 
 func (r *mutationResolver) CreateAccount(ctx context.Context, AccountIDPW Base.NewAccountIDPW, User Base.NewAccountUser) (Base.CreateReturn, error) {
-	panic("not implemented")
+	return MongoModel.ExaminationCreateAccount(AccountIDPW, User)
 }
 
 func (r *mutationResolver) ChangePassword(ctx context.Context, Token Base.InputToken, OldPW Base.AccountPW, NewPW Base.AccountPW, ConfirmationPW Base.AccountPW) (Base.CreateReturn, error) {
@@ -75,7 +76,7 @@ func (r *queryResolver) GetUser(ctx context.Context, ID string, Token string) (B
 // ============================================[Account]
 
 func (r *queryResolver) LogIn(ctx context.Context, ID string, Password string) (Base.LogInToken, error) {
-	panic("not implemented")
+	return MongoModel.ExaminationLogIn(ID, Password)
 }
 
 func (r *queryResolver) LogOut(ctx context.Context, Token string) (Base.StatusData, error) {

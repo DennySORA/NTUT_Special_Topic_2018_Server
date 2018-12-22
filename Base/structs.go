@@ -1,10 +1,10 @@
 package Base
 
 type Accesses struct {
-	Certification bool          `json:"Certification"`
-	PermitTime    string        `json:"PermitTime"`
-	Level         int           `json:"Level"`
-	PermitLog     []*PermitLogs `json:"Permit_log"`
+	Certification bool         `json:"Certification"`
+	PermitTime    string       `json:"PermitTime"`
+	Level         int          `json:"Level"`
+	PermitLog     []PermitLogs `json:"Permit_log"`
 }
 
 type AccountHas struct {
@@ -20,8 +20,8 @@ type CarData struct {
 	Status      StatusData `json:"Status"`
 	CarID       string     `json:"CarID"`
 	CarName     string     `json:"CarName"`
-	RefreshTime *string    `json:"RefreshTime"`
-	CreateTime  *string    `json:"CreateTime"`
+	RefreshTime string     `json:"RefreshTime"`
+	CreateTime  string     `json:"CreateTime"`
 }
 
 type CarIDReturn struct {
@@ -77,8 +77,8 @@ type MonitorStatus struct {
 }
 
 type MonitorStatusData struct {
-	StatusCode  int     `json:"StatusCode"`
-	RefreshTime *string `json:"RefreshTime"`
+	StatusCode  int    `json:"StatusCode"`
+	RefreshTime string `json:"RefreshTime"`
 }
 
 type NewAccountIDPW struct {
@@ -117,10 +117,10 @@ type Profiles struct {
 }
 
 type SecurityData struct {
-	Status       StatusData            `json:"Status"`
-	DoorStatus   []*SecurityStatusData `json:"DoorStatus"`
-	WindowStatus []*SecurityStatusData `json:"WindowStatus"`
-	LightStatus  []*SecurityStatusData `json:"LightStatus"`
+	Status       StatusData           `json:"Status"`
+	DoorStatus   []SecurityStatusData `json:"DoorStatus"`
+	WindowStatus []SecurityStatusData `json:"WindowStatus"`
+	LightStatus  []SecurityStatusData `json:"LightStatus"`
 }
 
 type SecurityStatus struct {
@@ -133,9 +133,9 @@ type SecurityStatus struct {
 }
 
 type SecurityStatusData struct {
-	Name        string  `json:"Name"`
-	StatusCode  int     `json:"StatusCode"`
-	RefreshTime *string `json:"RefreshTime"`
+	Name        string `json:"Name"`
+	StatusCode  int    `json:"StatusCode"`
+	RefreshTime string `json:"RefreshTime"`
 }
 
 type StatusData struct {
