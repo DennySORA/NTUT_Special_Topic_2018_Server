@@ -16,6 +16,16 @@ func SelfSuccess(Number int) StatusData {
 			StatusCode:  3,
 			Description: "Success Get Temporarily Token.",
 		}
+	} else if Number == 4 {
+		return StatusData{
+			StatusCode:  4,
+			Description: "Success Add Car ID to User.",
+		}
+	} else if Number == 5 {
+		return StatusData{
+			StatusCode:  5,
+			Description: "Success Get User Data.",
+		}
 	} else {
 		return StatusData{}
 	}

@@ -42,8 +42,7 @@ func (r *mutationResolver) ChangePassword(ctx context.Context, Token Base.InputT
 // ============================================[CarID]
 
 func (r *mutationResolver) AddCarID(ctx context.Context, Token Base.InputToken, InputCarNews Base.CarNews) (Base.CarIDReturn, error) {
-	panic("not implemented")
-	// return ExaminationAddCarID(Token, InputCarNews)
+	return Controller.ExaminationAddCarID(Token, InputCarNews)
 }
 
 func (r *mutationResolver) UpdateCarName(ctx context.Context, Token Base.InputToken, CarNameData Base.NewCarName) (Base.CreateReturn, error) {
@@ -71,7 +70,7 @@ type queryResolver struct{ *Resolver }
 // ============================================[User]
 
 func (r *queryResolver) GetUser(ctx context.Context, ID string, Token string) (Base.Users, error) {
-	panic("not implemented")
+	return Controller.ExaminationGetUser(ID, Token)
 }
 
 // ============================================[Account]

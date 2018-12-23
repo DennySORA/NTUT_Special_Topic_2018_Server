@@ -1,10 +1,10 @@
 package Base
 
 type Accesses struct {
-	Certification bool         `json:"Certification"`
-	PermitTime    string       `json:"PermitTime"`
-	Level         int          `json:"Level"`
-	PermitLog     []PermitLogs `json:"Permit_log"`
+	Certification bool          `json:"Certification"`
+	PermitTime    string        `json:"PermitTime"`
+	Level         int           `json:"Level"`
+	PermitLog     []*PermitLogs `json:"Permit_log"`
 }
 
 type AccountHas struct {
@@ -20,8 +20,8 @@ type CarData struct {
 	Status      StatusData `json:"Status"`
 	CarID       string     `json:"CarID"`
 	CarName     string     `json:"CarName"`
-	RefreshTime string     `json:"RefreshTime"`
-	CreateTime  string     `json:"CreateTime"`
+	RefreshTime *string    `json:"RefreshTime"`
+	CreateTime  *string    `json:"CreateTime"`
 }
 
 type CarIDReturn struct {

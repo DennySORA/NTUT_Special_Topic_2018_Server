@@ -31,28 +31,15 @@ func SelfErrors(Number int) StatusData {
 			StatusCode:  -6,
 			Description: "Token Invalid.",
 		}
+	} else if Number == 7 {
+		return StatusData{
+			StatusCode:  -7,
+			Description: "Add failure.",
+		}
 	} else {
 		return StatusData{
 			StatusCode:  0,
 			Description: "Internal error",
 		}
-	}
-}
-
-func UserERROE() Users {
-	return Users{
-		Status: StatusData{
-			StatusCode:  3,
-			Description: "Token nonexists",
-		},
-	}
-}
-
-func LogInERROR() LogInToken {
-	return LogInToken{
-		Status: StatusData{
-			StatusCode:  4,
-			Description: "Account error",
-		},
 	}
 }

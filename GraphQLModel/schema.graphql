@@ -6,62 +6,55 @@ schema {
 # ===========================================================[Query]
 type Query {
   # ============================================[User]
-  GetUser(ID: String!,Token: String!): Users!
+  GetUser(ID: String!, Token: String!): Users!
   # ============================================[Account]
   LogIn(ID: String!, Password: String!): LogInToken!
   LogOut(Token: String!): StatusData!
   CheckAccountHas(ID: String!): AccountHas!
   # ============================================[CarID]
-  GetCarID(ID: String!,Token: String!): [CarData!]
-  DeleteCarID(ID: String!,Token: String!,CarID: String!): StatusData!
+  GetCarID(ID: String!, Token: String!): [CarData!]
+  DeleteCarID(ID: String!, Token: String!, CarID: String!): StatusData!
   # ============================================[Status]
   # ------------------------------------[Monitor]
-  GetMonitorStatus(ID: String!,Token: String!,SelectObject: String!): MonitorData!
+  GetMonitorStatus(
+    ID: String!
+    Token: String!
+    SelectObject: String!
+  ): MonitorData!
   # -----------------------------------[Security]
-  GetSecurityStatus(ID: String!,Token: String!,SelectObject: String!): SecurityData!
+  GetSecurityStatus(
+    ID: String!
+    Token: String!
+    SelectObject: String!
+  ): SecurityData!
   # ============================================[Token]
-  GetTemporarilyToken(ID: String!,Token: String!): TemporarilyTokenData!
+  GetTemporarilyToken(ID: String!, Token: String!): TemporarilyTokenData!
   # ============================================
 }
 # ===========================================================[Mutation]
 type Mutation {
   # ============================================[User]
-  UpdateUser(
-    Token: InputToken!
-    User:NewAccountUser!
-    ):CreateReturn!
+  UpdateUser(Token: InputToken!, User: NewAccountUser!): CreateReturn!
   # ============================================[Account]
   CreateAccount(
     AccountIDPW: NewAccountIDPW!
-    User:NewAccountUser!
-    ):CreateReturn!
+    User: NewAccountUser!
+  ): CreateReturn!
   ChangePassword(
     Token: InputToken!
     OldPW: AccountPW!
     NewPW: AccountPW!
     ConfirmationPW: AccountPW!
-  ):CreateReturn!
+  ): CreateReturn!
   # ============================================[CarID]
-  AddCarID(
-    Token: InputToken!
-    InputCarNews: CarNews!
-  ): CarIDReturn!
-  UpdateCarName(
-    Token: InputToken!
-    CarNameData: NewCarName!
-  ):CreateReturn!
+  AddCarID(Token: InputToken!, InputCarNews: CarNews!): CarIDReturn!
+  UpdateCarName(Token: InputToken!, CarNameData: NewCarName!): CreateReturn!
   # ============================================[Status]
   # ------------------------------------[Monitor]
-  UpdateMonitor(
-    InputMonitorData: SecurityStatus!
-    ):CreateReturn!
+  UpdateMonitor(InputMonitorData: SecurityStatus!): CreateReturn!
   # -----------------------------------[Security]
-  UpdateSecurity(
-    InputSecurityData:SecurityStatus!
-  ):CreateReturn!
-  AddSecurity(
-    InputSecurityData:SecurityStatus!
-  ):CreateReturn!
+  UpdateSecurity(InputSecurityData: SecurityStatus!): CreateReturn!
+  AddSecurity(InputSecurityData: SecurityStatus!): CreateReturn!
   # ============================================
 }
 # ===============================================================================
@@ -72,8 +65,8 @@ type Users {
   Car: [CarData!]
   Profile: Profiles!
   Accesse: Accesses!
-  SiginHistory: Historys!
-  LogoutHistory: Historys!
+  SiginHistory: [Historys!]
+  LogoutHistory: [Historys!]
 }
 # ---------------------------------
 type Profiles {

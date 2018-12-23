@@ -32,26 +32,73 @@ func ExaminationLogIn(Account string, Password string) (Base.LogInToken, error) 
 	}
 }
 
-// ===========================================================[]
-// ============================================[GetTemporarilyToken]
+// ============================================[GetUser]
 
+func ExaminationGetUser(Account string, Token string) (Base.Users, error) {
+	Ok, number := RoutineInspection(Account, Token)
+	if Ok == false {
+		return Base.Users{Status: Base.SelfErrors(number)}, nil
+	} else if MongoDB.DBAccountHas(Account) == false {
+		return Base.Users{Status: Base.SelfErrors(5)}, nil
+	} else if MongoDB.TokenCheck(Account, Token, 1) == false {
+		return Base.Users{Status: Base.SelfErrors(6)}, nil
+	}
+	Data, Status := MongoDB.DBGetUser(Account, Token)
+	if Status != 0 {
+		return Base.Users{Status: Base.SelfErrors(Status)}, nil
+	} else {
+		return Data, nil
+	}
+}
+
+// ===========================================================[CarID]
+// ============================================[GetCarID]
+// func ExaminationGetCarID(Account string, Token string) ([]Base.CarData, error) {
+// 	Ok, number := RoutineInspection(Account, Token)
+// 	if Ok == false {
+// 		return []Base.CarData{Base.CarData{Status: Base.SelfErrors(number)}}, nil
+// 	} else if MongoDB.DBAccountHas(Account) == false {
+// 		return []Base.CarData{Base.CarData{Status: Base.SelfErrors(5)}}, nil
+// 	} else {
+// 	}
+// }
+
+// ============================================[GetTemporarilyToken]
 func ExaminationGetTemporarilyToken(Account string, Token string) (Base.TemporarilyTokenData, error) {
 	Ok, number := RoutineInspection(Account, Token)
 	if Ok == false {
 		return Base.TemporarilyTokenData{Status: Base.SelfErrors(number)}, nil
-	} else if MongoDB.TokenCheck(Account, Token) == false {
+	} else if MongoDB.TokenCheck(Account, Token, 1) == false {
 		return Base.TemporarilyTokenData{Status: Base.SelfErrors(6)}, nil
 	} else {
 		return Base.TemporarilyTokenData{
 			Status:   Base.SelfSuccess(3),
-			Token:    MongoDB.GetAccountToken(Account, 0, 2),
+			Token:    MongoDB.GetAccountToken(Account, "", 2),
 			GetTimes: MongoDB.GetUTCTime()}, nil
 	}
 }
 
-// func ExaminationAddCarID(Token Base.InputToken, InputCarNews Base.CarNews) (Base.CarIDReturn, error) {
-
-// }
+// ============================================[AddCarID]
+func ExaminationAddCarID(Token Base.InputToken, InputCarNews Base.CarNews) (Base.CarIDReturn, error) {
+	Ok, number := RoutineInspection(InputCarNews.ID, InputCarNews.TemporarilyToken)
+	if Ok == false {
+		return Base.CarIDReturn{Status: Base.SelfErrors(number)}, nil
+	} else if MongoDB.TokenCheck(InputCarNews.ID, InputCarNews.TemporarilyToken, 2) == false {
+		return Base.CarIDReturn{Status: Base.SelfErrors(6)}, nil
+	} else {
+		Token, Status := MongoDB.DBAddCarID(InputCarNews.ID, InputCarNews.CarID, InputCarNews.CarName)
+		if Status != 0 {
+			return Base.CarIDReturn{Status: Base.SelfErrors(Status)}, nil
+		} else {
+			return Base.CarIDReturn{
+				Status: Base.SelfSuccess(4),
+				ID:     InputCarNews.ID,
+				CarID:  InputCarNews.CarID,
+				Token:  Token,
+			}, nil
+		}
+	}
+}
 
 // ===============================================================================
 // ===========================================================[RoutineInspection]
