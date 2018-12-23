@@ -1,4 +1,4 @@
-package MongoModel
+package MongoDB
 
 import Base "sega/Base"
 

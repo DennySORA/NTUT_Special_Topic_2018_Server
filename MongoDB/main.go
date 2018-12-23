@@ -1,4 +1,4 @@
-package MongoModel
+package MongoDB
 
 import (
 	"fmt"
@@ -39,7 +39,7 @@ func DBCreateAccount(AccountIDPW Base.NewAccountIDPW, AccountData Base.NewAccoun
 	err = Collection.Insert(Register)
 	ERRs(err)
 	// -------------------------------------
-	return Base.CreateReturn{Status: SelfSuccess(1), ID: AccountIDPW.Account}
+	return Base.CreateReturn{Status: Base.SelfSuccess(1), ID: AccountIDPW.Account}
 }
 
 func DBLogIn(Account string, Password string) Base.LogInToken {
@@ -53,35 +53,14 @@ func DBLogIn(Account string, Password string) Base.LogInToken {
 	err = Collection.Find(bson.M{"Accountid": Account, "Password": GetSHAString(Password)}).One(&result)
 	// -------------------------------------
 	if err != nil {
-		return Base.LogInToken{Status: SelfErrors(4)}
+		return Base.LogInToken{Status: Base.SelfErrors(4)}
 	} else {
 		// -------------------------------------
 
 		// -------------------------------------
-		return ConverLogInToken(Account)
+		return ConverLogInToken(Account, 1)
 	}
 }
-
-// func GetUser(Token string) Base.Users {
-// 	ID, ok := TokenBox[Token]
-// 	Session, err := mgo.Dial(DatabaseURL)
-// 	defer Session.Close()
-// 	ERRs(err)
-// 	Database := Session.DB(DatabaseName)
-
-// 	if ok == false {
-// 		return UserERROE()
-// 	} else {
-// 		result := bson.M{}
-// 		Collection := Database.C("Register")
-// 		err = Collection.Find(bson.M{"accountid": ID}).One(&result)
-// 		ERRs(err)
-// 		Collection = Database.C("User")
-// 		err = Collection.Find(bson.M{"_id": result["_id"]}).One(&result)
-// 		ERRs(err)
-// 		return ConvertDBUser(result)
-// 	}
-// }
 
 // ===============================================================================
 // ============================================[AccountHas]

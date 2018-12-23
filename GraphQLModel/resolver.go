@@ -2,8 +2,8 @@ package GraphQLModel
 
 import (
 	"context"
-	"sega/Base"
-	"sega/MongoModel"
+	Base "sega/Base"
+	Controller "sega/Controller"
 )
 
 // ===============================================================================
@@ -32,7 +32,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, Token Base.InputToken
 // ============================================[Account]
 
 func (r *mutationResolver) CreateAccount(ctx context.Context, AccountIDPW Base.NewAccountIDPW, User Base.NewAccountUser) (Base.CreateReturn, error) {
-	return MongoModel.ExaminationCreateAccount(AccountIDPW, User)
+	return Controller.ExaminationCreateAccount(AccountIDPW, User)
 }
 
 func (r *mutationResolver) ChangePassword(ctx context.Context, Token Base.InputToken, OldPW Base.AccountPW, NewPW Base.AccountPW, ConfirmationPW Base.AccountPW) (Base.CreateReturn, error) {
@@ -43,6 +43,7 @@ func (r *mutationResolver) ChangePassword(ctx context.Context, Token Base.InputT
 
 func (r *mutationResolver) AddCarID(ctx context.Context, Token Base.InputToken, InputCarNews Base.CarNews) (Base.CarIDReturn, error) {
 	panic("not implemented")
+	// return ExaminationAddCarID(Token, InputCarNews)
 }
 
 func (r *mutationResolver) UpdateCarName(ctx context.Context, Token Base.InputToken, CarNameData Base.NewCarName) (Base.CreateReturn, error) {
@@ -76,7 +77,7 @@ func (r *queryResolver) GetUser(ctx context.Context, ID string, Token string) (B
 // ============================================[Account]
 
 func (r *queryResolver) LogIn(ctx context.Context, ID string, Password string) (Base.LogInToken, error) {
-	return MongoModel.ExaminationLogIn(ID, Password)
+	return Controller.ExaminationLogIn(ID, Password)
 }
 
 func (r *queryResolver) LogOut(ctx context.Context, Token string) (Base.StatusData, error) {
@@ -97,6 +98,10 @@ func (r *queryResolver) DeleteCarID(ctx context.Context, ID string, Token string
 	panic("not implemented")
 }
 
+func (r *queryResolver) GetTemporarilyToken(ctx context.Context, ID string, Token string) (Base.TemporarilyTokenData, error) {
+	return Controller.ExaminationGetTemporarilyToken(ID, Token)
+}
+
 // ============================================[Status]
 
 func (r *queryResolver) GetMonitorStatus(ctx context.Context, ID string, Token string, SelectObject string) (Base.MonitorData, error) {
@@ -104,10 +109,6 @@ func (r *queryResolver) GetMonitorStatus(ctx context.Context, ID string, Token s
 }
 
 func (r *queryResolver) GetSecurityStatus(ctx context.Context, ID string, Token string, SelectObject string) (Base.SecurityData, error) {
-	panic("not implemented")
-}
-
-func (r *queryResolver) GetTemporarilyToken(ctx context.Context, ID string, Token string) (Base.TemporarilyTokenData, error) {
 	panic("not implemented")
 }
 

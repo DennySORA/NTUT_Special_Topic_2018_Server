@@ -1,4 +1,4 @@
-package MongoModel
+package MongoDB
 
 import (
 	"encoding/hex"
@@ -54,11 +54,11 @@ func ConvertRegisters(AccountIDPW Base.NewAccountIDPW, Oid bson.ObjectId) bson.M
 	}
 }
 
-func ConverLogInToken(Account string) Base.LogInToken {
+func ConverLogInToken(Account string, level int) Base.LogInToken {
 	return Base.LogInToken{
-		Status:       SelfSuccess(2),
+		Status:       Base.SelfSuccess(2),
 		GetTimes:     GetUTCTime(),
-		AccountToken: GetLogInToken(Account),
+		AccountToken: GetAccountToken(Account, level, 1),
 		AccountID:    Account,
 	}
 }
