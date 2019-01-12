@@ -84,13 +84,13 @@ func (r *queryResolver) LogOut(ctx context.Context, Token string) (Base.StatusDa
 }
 
 func (r *queryResolver) CheckAccountHas(ctx context.Context, ID string) (Base.AccountHas, error) {
-	panic("not implemented")
+	return Controller.ExaminationCheckAccountHas(ID)
 }
 
 // ============================================[CarID]
 
 func (r *queryResolver) GetCarID(ctx context.Context, ID string, Token string) ([]Base.CarData, error) {
-	panic("not implemented")
+	return Controller.ExaminationGetCarID(ID, Token)
 }
 
 func (r *queryResolver) DeleteCarID(ctx context.Context, ID string, Token string, CarID string) (Base.StatusData, error) {

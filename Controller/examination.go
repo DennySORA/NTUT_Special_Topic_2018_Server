@@ -32,6 +32,18 @@ func ExaminationLogIn(Account string, Password string) (Base.LogInToken, error) 
 	}
 }
 
+// ============================================[CheckAccountHas]
+func ExaminationCheckAccountHas(Account string) (Base.AccountHas, error) {
+	Ok, number := RoutineInspection(Account, "Temp")
+	if Ok == false {
+		return Base.AccountHas{Status: Base.SelfErrors(number)}, nil
+	} else if MongoDB.DBAccountHas(Account) == false {
+		return Base.AccountHas{Status: Base.SelfSuccess(6), Has: false}, nil
+	} else {
+		return Base.AccountHas{Status: Base.SelfSuccess(6), Has: true}, nil
+	}
+}
+
 // ============================================[GetUser]
 
 func ExaminationGetUser(Account string, Token string) (Base.Users, error) {
@@ -53,15 +65,20 @@ func ExaminationGetUser(Account string, Token string) (Base.Users, error) {
 
 // ===========================================================[CarID]
 // ============================================[GetCarID]
-// func ExaminationGetCarID(Account string, Token string) ([]Base.CarData, error) {
-// 	Ok, number := RoutineInspection(Account, Token)
-// 	if Ok == false {
-// 		return []Base.CarData{Base.CarData{Status: Base.SelfErrors(number)}}, nil
-// 	} else if MongoDB.DBAccountHas(Account) == false {
-// 		return []Base.CarData{Base.CarData{Status: Base.SelfErrors(5)}}, nil
-// 	} else {
-// 	}
-// }
+func ExaminationGetCarID(Account string, Token string) ([]Base.CarData, error) {
+	Ok, number := RoutineInspection(Account, Token)
+	if Ok == false {
+		return []Base.CarData{Base.CarData{Status: Base.SelfErrors(number)}}, nil
+	} else if MongoDB.DBAccountHas(Account) == false {
+		return []Base.CarData{Base.CarData{Status: Base.SelfErrors(5)}}, nil
+	}
+	Data, Status := MongoDB.DBGetCarID(Account, Token)
+	if Status != 0 {
+		return []Base.CarData{Base.CarData{Status: Base.SelfErrors(Status)}}, nil
+	} else {
+		return Data, nil
+	}
+}
 
 // ============================================[GetTemporarilyToken]
 func ExaminationGetTemporarilyToken(Account string, Token string) (Base.TemporarilyTokenData, error) {

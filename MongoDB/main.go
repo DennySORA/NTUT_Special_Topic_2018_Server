@@ -96,6 +96,22 @@ func DBGetUser(Account string, Token string) (Base.Users, int) {
 	}
 }
 
+// ============================================[GetUser]
+func DBGetCarID(Account string, Token string) ([]Base.CarData, int) {
+	Session, err := mgo.Dial(DatabaseURL)
+	defer Session.Close()
+	ERRs(err)
+	Database := Session.DB(DatabaseName)
+	Collection := Database.C("User")
+	result := bson.M{}
+	err = Collection.Find(bson.M{"Email": Account}).Select(bson.M{"_id": 0, "Car": 1}).One(&result)
+	if err != nil {
+		return []Base.CarData{}, 8
+	} else {
+		return ReturnCarIDConvert(result), 0
+	}
+}
+
 // ===========================================================[CarID]
 // ============================================[AddCarID]
 func DBAddCarID(Account string, CarID string, CarName string) (string, int) {

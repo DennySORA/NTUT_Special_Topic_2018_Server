@@ -1,6 +1,7 @@
 package main
 
 import (
+	fmt "fmt"
 	log "log"
 	http "net/http"
 	os "os"
@@ -29,8 +30,13 @@ func main() {
 	// ==============================================
 	router.Handle("/", handler.Playground("GraphQL playground", "/query"))
 	router.Handle("/query", handler.GraphQL(GraphQLModel.NewExecutableSchema(GraphQLModel.Config{Resolvers: &GraphQLModel.Resolver{}})))
-
+	router.Get("/loaderio-434253d2ac58483eba54001e1f0f0d69.txt", CertificationFunction)
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	// log.Fatal(http.ListenAndServe(":"+port, router))
 	log.Fatal(http.ListenAndServeTLS(":"+port, "./SSL/server.crt", "./SSL/server.key", router))
+}
+
+func CertificationFunction(w http.ResponseWriter, r *http.Request) {
+	CertificationData := "loaderio-434253d2ac58483eba54001e1f0f0d69"
+	fmt.Fprint(w, CertificationData)
 }

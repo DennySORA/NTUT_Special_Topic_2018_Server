@@ -26,6 +26,16 @@ func SelfSuccess(Number int) StatusData {
 			StatusCode:  5,
 			Description: "Success Get User Data.",
 		}
+	} else if Number == 6 {
+		return StatusData{
+			StatusCode:  6,
+			Description: "Success Return AccountHas.",
+		}
+	} else if Number == 7 {
+		return StatusData{
+			StatusCode:  7,
+			Description: "Success Get Car ID.",
+		}
 	} else {
 		return StatusData{}
 	}
