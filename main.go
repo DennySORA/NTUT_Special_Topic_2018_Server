@@ -10,8 +10,5 @@ func main() {
 	if Config.StartGraphQLServer {
 		Server.StartGraphQLServer()
 	}
-	if Config.StartOtherServer {
-		Server.StartOtherServer()
-	}
 	<-Stop
 }
