@@ -1,0 +1,31 @@
+type Mutation {
+  # ============================================[User]
+  UpdateUser(
+    Certification: InputCertification!
+    User: NewAccountUser!
+  ): CreateReturn!
+  # ============================================[Account]
+  CreateAccount(
+    AccountIDPW: NewAccountIDPW!
+    User: NewAccountUser!
+  ): CreateReturn!
+  ChangePassword(
+    Certification: InputCertification!
+    OldPW: AccountPW!
+    NewPW: AccountPW!
+    ConfirmationPW: AccountPW!
+  ): CreateReturn!
+  # ============================================[CarID]
+  AddCarID(InputCarNews: CarNews!): CarIDReturn!
+  UpdateCarName(
+    Certification: InputCertification!
+    CarNameData: NewCarName!
+  ): CreateReturn!
+  # ============================================[Status]
+  # ------------------------------------[Monitor]
+  UpdateMonitor(InputMonitorData: SecurityStatus!): CreateReturn!
+  # -----------------------------------[Security]
+  UpdateSecurity(InputSecurityData: SecurityStatus!): CreateReturn!
+  AddSecurity(InputSecurityData: SecurityStatus!): CreateReturn!
+  # ============================================
+}

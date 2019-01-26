@@ -36,6 +36,16 @@ func SelfSuccess(Number int) StatusData {
 			StatusCode:  7,
 			Description: "Success Get Car ID.",
 		}
+	} else if Number == 8 {
+		return StatusData{
+			StatusCode:  8,
+			Description: "Success Update User.",
+		}
+	} else if Number == 9 {
+		return StatusData{
+			StatusCode:  9,
+			Description: "Success Log Out.",
+		}
 	} else {
 		return StatusData{}
 	}

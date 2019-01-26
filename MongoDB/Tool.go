@@ -1,9 +1,9 @@
 package MongoDB
 
 import (
+	"SORA/Project/Go_Back_End_SEGA_Project/Base"
 	"encoding/hex"
 	"fmt"
-	Base "sega/Base"
 	"strconv"
 	"time"
 
@@ -96,7 +96,7 @@ func ReturnCarIDConvert(CarIDs bson.M) []Base.CarData {
 	return ReturnCarID
 }
 
-func ForSiginHistoryList(SiginHistory []interface{}) Base.Historys {
+func ForSiginHistoryList(SiginHistory []interface{}) []Base.Historys {
 	TempList := []Base.Historys{}
 	for _, v := range SiginHistory {
 		Temp, _ := strconv.Atoi(v.(bson.M)["Types"].(string))
@@ -108,13 +108,13 @@ func ForSiginHistoryList(SiginHistory []interface{}) Base.Historys {
 		})
 	}
 	if len(TempList) == 0 {
-		return Base.Historys{}
+		return []Base.Historys{}
 	} else {
-		return TempList[len(TempList)-1]
+		return TempList
 	}
 }
 
-func ForLogoutHistoryList(LogoutHistory []interface{}) Base.Historys {
+func ForLogoutHistoryList(LogoutHistory []interface{}) []Base.Historys {
 	TempList := []Base.Historys{}
 	for _, v := range LogoutHistory {
 		Temp, _ := strconv.Atoi(v.(bson.M)["Types"].(string))
@@ -126,9 +126,9 @@ func ForLogoutHistoryList(LogoutHistory []interface{}) Base.Historys {
 		})
 	}
 	if len(TempList) == 0 {
-		return Base.Historys{}
+		return []Base.Historys{}
 	} else {
-		return TempList[len(TempList)-1]
+		return TempList
 	}
 }
 

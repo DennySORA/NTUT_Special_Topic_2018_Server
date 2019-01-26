@@ -8,7 +8,9 @@
 - [x] GetUser
     - Finish Time： 2018/12/23
     - Test ：Yes
-    - Debug： 
+    - Debug
+      - Time :2019/01/26
+      - About:Merge token and account to input cartification parameter of API.
     - Remarks：
 
 - [x] LogIn
@@ -28,13 +30,17 @@
 - [x] AddCarID
     - Finish Time： 2018/12/23
     - Test ：
-    - Debug： 
+    - Debug
+      - Time :2019/01/26
+      - Fix API parameter with remove token.
     - Remarks：
 
 - [x] GetTemporarilyToken
     - Finish Time： 2018/12/23
     - Test ：
     - Debug： 
+      - Time :2019/01/26
+      - Merge token and account to input cartification parameter of API.
     - Remarks：
 
 - [x] CheckAccountHas
@@ -47,16 +53,26 @@
     - Finish Time： 2019/01/13
     - Test ：
     - Debug： 
+      - Time :2019/01/26
+      - Merge token and account to input cartification parameter of API.
     - Remarks：
+
+- [x] UpdateUser
+    - Finish Time： 2019/01/26
+    - Test ：
+    - Debug： 
+    - Remarks：
+
+- [x] LogOut
+    - Finish Time： 2019/01/13
+    - Test ：
+    - Debug： 
+    - Remarks：
+
 ---
 
 ### Not Finish
 
-- [ ] LogOut
-    - Finish Time： 
-    - Test ：
-    - Debug： 
-    - Remarks：
 
 - [ ] DeleteCarID
     - Finish Time： 
@@ -76,11 +92,7 @@
     - Debug： 
     - Remarks：
 
-- [ ] UpdateUser
-    - Finish Time： 
-    - Test ：
-    - Debug： 
-    - Remarks：
+
 
 - [ ] ChangePassword
     - Finish Time： 

@@ -1,27 +1,24 @@
 package MongoDB
 
 import (
-	Base "sega/Base"
+	"SORA/Project/Go_Back_End_SEGA_Project/Base"
+	"SORA/Project/Go_Back_End_SEGA_Project/Config"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
-const DatabaseURL = "127.0.0.1:27017"
-const DatabaseName = "Test"
-
-// ===========================================================[Account]
 // ============================================[CreateAccount]
+
 func DBCreateAccount(AccountIDPW Base.NewAccountIDPW, AccountData Base.NewAccountUser) Base.CreateReturn {
 	// ====================================[DBLink]
-	Session, err := mgo.Dial(DatabaseURL)
+	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()
 	ERRs(err)
-	Database := Session.DB(DatabaseName)
+	Database := Session.DB(Config.DatabaseName)
 	Collection := Database.C("Register")
 	// -------------------------------------
 	User := UserConvert(AccountData, AccountIDPW.Account)
-	// fmt.Printf("%v\n", User)
 	// -------------------------------------
 	Collection = Database.C("User")
 	err = Collection.Insert(User)
@@ -30,7 +27,6 @@ func DBCreateAccount(AccountIDPW Base.NewAccountIDPW, AccountData Base.NewAccoun
 	result := bson.M{}
 	err = Collection.Find(bson.M{"Email": AccountIDPW.Account}).One(&result)
 	ERRs(err)
-	// fmt.Printf("%v\n", result["_id"])
 	Oid, _ := result["_id"].(bson.ObjectId)
 	// -------------------------------------
 	Register := ConvertRegisters(AccountIDPW, Oid)
@@ -42,11 +38,12 @@ func DBCreateAccount(AccountIDPW Base.NewAccountIDPW, AccountData Base.NewAccoun
 }
 
 // ============================================[LogIn]
+
 func DBLogIn(Account string, Password string) Base.LogInToken {
-	Session, err := mgo.Dial(DatabaseURL)
+	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()
 	ERRs(err)
-	Database := Session.DB(DatabaseName)
+	Database := Session.DB(Config.DatabaseName)
 	Collection := Database.C("Register")
 	result := bson.M{}
 	// -------------------------------------
@@ -80,71 +77,43 @@ func DBLogIn(Account string, Password string) Base.LogInToken {
 
 // ============================================[LogOut]
 
-// ============================================[GetUser]
-func DBGetUser(Account string, Token string) (Base.Users, int) {
-	Session, err := mgo.Dial(DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(DatabaseName)
-	Collection := Database.C("User")
-	result := bson.M{}
-	err = Collection.Find(bson.M{"Email": Account}).One(&result)
-	if err != nil {
-		return Base.Users{}, 8
-	} else {
-		return ReturnUserConvert(result), 0
+func DBLogOut(Account string, Token string) Base.StatusData {
+	Invalid := TokenInvalid(Account, Token, 1)
+	if Invalid == false {
+		return Base.SelfErrors(8)
 	}
-}
-
-// ============================================[GetUser]
-func DBGetCarID(Account string, Token string) ([]Base.CarData, int) {
-	Session, err := mgo.Dial(DatabaseURL)
+	// ========================================
+	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()
 	ERRs(err)
-	Database := Session.DB(DatabaseName)
-	Collection := Database.C("User")
-	result := bson.M{}
-	err = Collection.Find(bson.M{"Email": Account}).Select(bson.M{"_id": 0, "Car": 1}).One(&result)
-	if err != nil {
-		return []Base.CarData{}, 8
-	} else {
-		return ReturnCarIDConvert(result), 0
-	}
-}
-
-// ===========================================================[CarID]
-// ============================================[AddCarID]
-func DBAddCarID(Account string, CarID string, CarName string) (string, int) {
-	Session, err := mgo.Dial(DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(DatabaseName)
+	Database := Session.DB(Config.DatabaseName)
 	Collection := Database.C("User")
 	// ========================================
 	selects := bson.M{"Email": Account}
 	data := bson.M{"$addToSet": bson.M{
-		"Car": bson.M{
-			"CarID":       CarID,
-			"CarName":     CarName,
-			"RefreshTime": GetUTCTime(),
-			"CreateTime":  GetUTCTime(),
+		"LogoutHistory": bson.M{
+			"Times":    GetUTCTime(),
+			"UseToken": Token[:10],
+			"Types":    "Null",
+			"Device":   "Null",
 		}}}
 	// ========================================
 	err = Collection.Update(selects, data)
 	if err != nil {
-		return "nil", 7
+		return Base.SelfErrors(0)
 	} else {
-		return GetAccountToken(Account, CarID, 3), 0
+		return Base.SelfSuccess(9)
 	}
+	// -------------------------------------
 }
 
-// ===============================================================================
 // ============================================[AccountHas]
+
 func DBAccountHas(ID string) bool {
-	Session, err := mgo.Dial(DatabaseURL)
+	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()
 	ERRs(err)
-	Database := Session.DB(DatabaseName)
+	Database := Session.DB(Config.DatabaseName)
 	Collection := Database.C("Register")
 	result := bson.M{}
 	err = Collection.Find(bson.M{"Accountid": ID}).One(&result)

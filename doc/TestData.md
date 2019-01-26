@@ -15,6 +15,18 @@
         AccountToken
     }
     }
+### LogOut
+
+  query LogOut{
+    LogOut(
+      Certification:{
+        Account:"window930030@gmail.com"
+        Token:""
+      }){
+        StatusCode
+        Description
+    }
+  }
 
 ### CheckAccount
 
@@ -48,71 +60,95 @@
 
 ### GetTemporarilyToken
 
-    query GetTemporarilyToken {
-    GetTemporarilyToken(
-        ID:"abcde@gmail.com",
-    Token:""
-    ){
-        Status{
-        StatusCode
-        Description
-        }
-        Token
-        GetTimes
+query GetTemporarilyToken {
+  GetTemporarilyToken(
+	Certification:{
+      Account:"abcde@gmail.com"
+      Token:""
+  }){
+    Status{
+      StatusCode
+      Description
     }
-    
-    }
+    Token
+    GetTimes
+  }
+}
+
 
 ### GetUser
 
-    query GetUser {
-    GetUser(
-        ID:"abcde@gmail.com",
-        Token:""
-    ){
-        Status{
+ query GetUser {
+  GetUser(
+   Certification:{
+      Account:"abcde@gmail.com"
+      Token:""
+  }){
+    Status{
+      StatusCode
+      Description
+    }
+    Car{
+      CarID
+      CarName
+    	CreateTime
+      RefreshTime
+    }
+    Profile{
+      Name
+      Gender
+      Phone{
+        Country
+        Number
+      }
+    }
+    Accesse{
+      Certification
+      PermitTime
+      Level
+      Permit_log{
+        Level
+        Times
+        Authority
+      }
+    }
+    SiginHistory{
+      Times
+      Types
+      Device
+      UseToken
+    }
+    LogoutHistory{
+      Times
+      Types
+      Device
+      UseToken
+    }
+  }
+}
+
+### UpdateUser
+
+    mutation UpdateUser {
+      UpdateUser(
+        Certification:{
+          Account:"abcde@gmail.com"
+          Token:""
+        }
+        User:{
+          Name: "FxxK",
+          Gender: 0,
+          Country: "+887",
+          Number:"0487987"
+        }
+      ){
+      Status{
         StatusCode
         Description
-        }
-        Car{
-        CarID
-        CarName
-            CreateTime
-        RefreshTime
-        }
-        Profile{
-        Name
-        Gender
-        Phone{
-            Country
-            Number
-        }
-        }
-        Accesse{
-        Certification
-        PermitTime
-        Level
-        Permit_log{
-            Level
-            Times
-            Authority
-        }
-        }
-        SiginHistory{
-        Times
-        Types
-        Device
-        UseToken
-        }
-        LogoutHistory{
-        Times
-        Types
-        Device
-        UseToken
-        }
+      } 
+        ID
+      }
     }
-    }
-
 
 ---
 
@@ -121,23 +157,22 @@
 ### AddCarID
 
     mutation AddCarID {
-    AddCarID(
-        Token:{Token:""},
+      AddCarID(
         InputCarNews:{
-        ID:"abcde@gmail.com",
-        CarID:"41d5sa4f5sd",
-        CarName:"我愛車",
-        TemporarilyToken:"694100"
+          ID:"abcde@gmail.com",
+          CarID:"41d5sa4f5sd",
+          CarName:"我愛車",
+          TemporarilyToken:""
         }
-    ){
-    Status{
-        StatusCode
-        Description
+      ){
+      Status{
+          StatusCode
+          Description
         }
         ID
         CarID
         Token
-    }
+      }
     }
 
 ### Create

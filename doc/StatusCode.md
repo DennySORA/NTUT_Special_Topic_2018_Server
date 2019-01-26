@@ -25,6 +25,8 @@
 7. StatusCode:  -7
 	- Description: Add failure.
 
+8. StatusCode:  -8
+   - Description: "Token remove error."
 ---
 
 ## Success Code
@@ -49,3 +51,9 @@
 
 7. StatusCode:  7
    - Description: Success Get Car ID.
+
+8. StatusCode:  8
+   - Description: Success Update User.
+
+9. StatusCode:  9
+   - Description: "Success Log Out."
