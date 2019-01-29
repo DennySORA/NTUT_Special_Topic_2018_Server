@@ -69,6 +69,8 @@ func TokenInvalid(Account string, Token string, Mode int) bool {
 	} else if AccountHas && Mode == 2 {
 		delete(TokenBox, Account)
 		return true
+	} else if Mode == 3 && TokenHas {
+		return true
 	} else {
 		return false
 	}

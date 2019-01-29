@@ -1,0 +1,25 @@
+type Query {
+  # ============================================[User]
+  GetUser(Certification: InputCertification!): Users!
+  # ============================================[Account]
+  LogIn(ID: String!, Password: String!): LogInToken!
+  LogOut(Certification: InputCertification!): StatusData!
+  CheckAccountHas(ID: String!): AccountHas!
+  # ============================================[CarID]
+  GetCarID(Certification: InputCertification!): [CarData!]
+  DeleteCarID(Certification: InputCertification!, CarID: String!): StatusData!
+  # ============================================[Status]
+  # ------------------------------------[Monitor]
+  GetMonitorStatus(
+    Certification: InputCertification!
+    SelectObject: String!
+  ): MonitorData!
+  # -----------------------------------[Security]
+  GetSecurityStatus(
+    Certification: InputCertification!
+    SelectObject: String!
+  ): SecurityData!
+  # ============================================[Token]
+  GetTemporarilyToken(Certification: InputCertification!): TemporarilyTokenData!
+  # ============================================
+}

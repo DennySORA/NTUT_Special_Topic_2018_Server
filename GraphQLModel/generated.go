@@ -3,10 +3,10 @@
 package GraphQLModel
 
 import (
+	"SORA/Project/Go_Back_End_SEGA_Project/Base"
 	"bytes"
 	"context"
 	"errors"
-	"sega/Base"
 	"strconv"
 	"sync"
 
@@ -99,11 +99,11 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		UpdateUser     func(childComplexity int, Token Base.InputToken, User Base.NewAccountUser) int
+		UpdateUser     func(childComplexity int, Certification Base.InputCertification, User Base.NewAccountUser) int
 		CreateAccount  func(childComplexity int, AccountIDPW Base.NewAccountIDPW, User Base.NewAccountUser) int
-		ChangePassword func(childComplexity int, Token Base.InputToken, OldPW Base.AccountPW, NewPW Base.AccountPW, ConfirmationPW Base.AccountPW) int
-		AddCarId       func(childComplexity int, Token Base.InputToken, InputCarNews Base.CarNews) int
-		UpdateCarName  func(childComplexity int, Token Base.InputToken, CarNameData Base.NewCarName) int
+		ChangePassword func(childComplexity int, Certification Base.InputCertification, OldPW Base.AccountPW, NewPW Base.AccountPW, ConfirmationPW Base.AccountPW) int
+		AddCarId       func(childComplexity int, InputCarNews Base.CarNews) int
+		UpdateCarName  func(childComplexity int, Certification Base.InputCertification, CarNameData Base.NewCarName) int
 		UpdateMonitor  func(childComplexity int, InputMonitorData Base.SecurityStatus) int
 		UpdateSecurity func(childComplexity int, InputSecurityData Base.SecurityStatus) int
 		AddSecurity    func(childComplexity int, InputSecurityData Base.SecurityStatus) int
@@ -127,15 +127,15 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		GetUser             func(childComplexity int, ID string, Token string) int
+		GetUser             func(childComplexity int, Certification Base.InputCertification) int
 		LogIn               func(childComplexity int, ID string, Password string) int
-		LogOut              func(childComplexity int, Token string) int
+		LogOut              func(childComplexity int, Certification Base.InputCertification) int
 		CheckAccountHas     func(childComplexity int, ID string) int
-		GetCarId            func(childComplexity int, ID string, Token string) int
-		DeleteCarId         func(childComplexity int, ID string, Token string, CarID string) int
-		GetMonitorStatus    func(childComplexity int, ID string, Token string, SelectObject string) int
-		GetSecurityStatus   func(childComplexity int, ID string, Token string, SelectObject string) int
-		GetTemporarilyToken func(childComplexity int, ID string, Token string) int
+		GetCarId            func(childComplexity int, Certification Base.InputCertification) int
+		DeleteCarId         func(childComplexity int, Certification Base.InputCertification, CarID string) int
+		GetMonitorStatus    func(childComplexity int, Certification Base.InputCertification, SelectObject string) int
+		GetSecurityStatus   func(childComplexity int, Certification Base.InputCertification, SelectObject string) int
+		GetTemporarilyToken func(childComplexity int, Certification Base.InputCertification) int
 	}
 
 	SecurityData struct {
@@ -173,38 +173,38 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	UpdateUser(ctx context.Context, Token Base.InputToken, User Base.NewAccountUser) (Base.CreateReturn, error)
+	UpdateUser(ctx context.Context, Certification Base.InputCertification, User Base.NewAccountUser) (Base.CreateReturn, error)
 	CreateAccount(ctx context.Context, AccountIDPW Base.NewAccountIDPW, User Base.NewAccountUser) (Base.CreateReturn, error)
-	ChangePassword(ctx context.Context, Token Base.InputToken, OldPW Base.AccountPW, NewPW Base.AccountPW, ConfirmationPW Base.AccountPW) (Base.CreateReturn, error)
-	AddCarID(ctx context.Context, Token Base.InputToken, InputCarNews Base.CarNews) (Base.CarIDReturn, error)
-	UpdateCarName(ctx context.Context, Token Base.InputToken, CarNameData Base.NewCarName) (Base.CreateReturn, error)
+	ChangePassword(ctx context.Context, Certification Base.InputCertification, OldPW Base.AccountPW, NewPW Base.AccountPW, ConfirmationPW Base.AccountPW) (Base.CreateReturn, error)
+	AddCarID(ctx context.Context, InputCarNews Base.CarNews) (Base.CarIDReturn, error)
+	UpdateCarName(ctx context.Context, Certification Base.InputCertification, CarNameData Base.NewCarName) (Base.CreateReturn, error)
 	UpdateMonitor(ctx context.Context, InputMonitorData Base.SecurityStatus) (Base.CreateReturn, error)
 	UpdateSecurity(ctx context.Context, InputSecurityData Base.SecurityStatus) (Base.CreateReturn, error)
 	AddSecurity(ctx context.Context, InputSecurityData Base.SecurityStatus) (Base.CreateReturn, error)
 }
 type QueryResolver interface {
-	GetUser(ctx context.Context, ID string, Token string) (Base.Users, error)
+	GetUser(ctx context.Context, Certification Base.InputCertification) (Base.Users, error)
 	LogIn(ctx context.Context, ID string, Password string) (Base.LogInToken, error)
-	LogOut(ctx context.Context, Token string) (Base.StatusData, error)
+	LogOut(ctx context.Context, Certification Base.InputCertification) (Base.StatusData, error)
 	CheckAccountHas(ctx context.Context, ID string) (Base.AccountHas, error)
-	GetCarID(ctx context.Context, ID string, Token string) ([]Base.CarData, error)
-	DeleteCarID(ctx context.Context, ID string, Token string, CarID string) (Base.StatusData, error)
-	GetMonitorStatus(ctx context.Context, ID string, Token string, SelectObject string) (Base.MonitorData, error)
-	GetSecurityStatus(ctx context.Context, ID string, Token string, SelectObject string) (Base.SecurityData, error)
-	GetTemporarilyToken(ctx context.Context, ID string, Token string) (Base.TemporarilyTokenData, error)
+	GetCarID(ctx context.Context, Certification Base.InputCertification) ([]Base.CarData, error)
+	DeleteCarID(ctx context.Context, Certification Base.InputCertification, CarID string) (Base.StatusData, error)
+	GetMonitorStatus(ctx context.Context, Certification Base.InputCertification, SelectObject string) (Base.MonitorData, error)
+	GetSecurityStatus(ctx context.Context, Certification Base.InputCertification, SelectObject string) (Base.SecurityData, error)
+	GetTemporarilyToken(ctx context.Context, Certification Base.InputCertification) (Base.TemporarilyTokenData, error)
 }
 
 func field_Mutation_UpdateUser_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 Base.InputToken
-	if tmp, ok := rawArgs["Token"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = UnmarshalInputToken(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["Token"] = arg0
+	args["Certification"] = arg0
 	var arg1 Base.NewAccountUser
 	if tmp, ok := rawArgs["User"]; ok {
 		var err error
@@ -244,15 +244,15 @@ func field_Mutation_CreateAccount_args(rawArgs map[string]interface{}) (map[stri
 
 func field_Mutation_ChangePassword_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 Base.InputToken
-	if tmp, ok := rawArgs["Token"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = UnmarshalInputToken(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["Token"] = arg0
+	args["Certification"] = arg0
 	var arg1 Base.AccountPW
 	if tmp, ok := rawArgs["OldPW"]; ok {
 		var err error
@@ -286,39 +286,30 @@ func field_Mutation_ChangePassword_args(rawArgs map[string]interface{}) (map[str
 
 func field_Mutation_AddCarID_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 Base.InputToken
-	if tmp, ok := rawArgs["Token"]; ok {
-		var err error
-		arg0, err = UnmarshalInputToken(tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["Token"] = arg0
-	var arg1 Base.CarNews
+	var arg0 Base.CarNews
 	if tmp, ok := rawArgs["InputCarNews"]; ok {
 		var err error
-		arg1, err = UnmarshalCarNews(tmp)
+		arg0, err = UnmarshalCarNews(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["InputCarNews"] = arg1
+	args["InputCarNews"] = arg0
 	return args, nil
 
 }
 
 func field_Mutation_UpdateCarName_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 Base.InputToken
-	if tmp, ok := rawArgs["Token"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = UnmarshalInputToken(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["Token"] = arg0
+	args["Certification"] = arg0
 	var arg1 Base.NewCarName
 	if tmp, ok := rawArgs["CarNameData"]; ok {
 		var err error
@@ -379,24 +370,15 @@ func field_Mutation_AddSecurity_args(rawArgs map[string]interface{}) (map[string
 
 func field_Query_GetUser_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["ID"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = graphql.UnmarshalString(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["ID"] = arg0
-	var arg1 string
-	if tmp, ok := rawArgs["Token"]; ok {
-		var err error
-		arg1, err = graphql.UnmarshalString(tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["Token"] = arg1
+	args["Certification"] = arg0
 	return args, nil
 
 }
@@ -427,15 +409,15 @@ func field_Query_LogIn_args(rawArgs map[string]interface{}) (map[string]interfac
 
 func field_Query_LogOut_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["Token"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = graphql.UnmarshalString(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["Token"] = arg0
+	args["Certification"] = arg0
 	return args, nil
 
 }
@@ -457,147 +439,102 @@ func field_Query_CheckAccountHas_args(rawArgs map[string]interface{}) (map[strin
 
 func field_Query_GetCarID_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["ID"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = graphql.UnmarshalString(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["ID"] = arg0
-	var arg1 string
-	if tmp, ok := rawArgs["Token"]; ok {
-		var err error
-		arg1, err = graphql.UnmarshalString(tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["Token"] = arg1
+	args["Certification"] = arg0
 	return args, nil
 
 }
 
 func field_Query_DeleteCarID_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["ID"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = graphql.UnmarshalString(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["ID"] = arg0
+	args["Certification"] = arg0
 	var arg1 string
-	if tmp, ok := rawArgs["Token"]; ok {
+	if tmp, ok := rawArgs["CarID"]; ok {
 		var err error
 		arg1, err = graphql.UnmarshalString(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["Token"] = arg1
-	var arg2 string
-	if tmp, ok := rawArgs["CarID"]; ok {
-		var err error
-		arg2, err = graphql.UnmarshalString(tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["CarID"] = arg2
+	args["CarID"] = arg1
 	return args, nil
 
 }
 
 func field_Query_GetMonitorStatus_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["ID"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = graphql.UnmarshalString(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["ID"] = arg0
+	args["Certification"] = arg0
 	var arg1 string
-	if tmp, ok := rawArgs["Token"]; ok {
+	if tmp, ok := rawArgs["SelectObject"]; ok {
 		var err error
 		arg1, err = graphql.UnmarshalString(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["Token"] = arg1
-	var arg2 string
-	if tmp, ok := rawArgs["SelectObject"]; ok {
-		var err error
-		arg2, err = graphql.UnmarshalString(tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["SelectObject"] = arg2
+	args["SelectObject"] = arg1
 	return args, nil
 
 }
 
 func field_Query_GetSecurityStatus_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["ID"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = graphql.UnmarshalString(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["ID"] = arg0
+	args["Certification"] = arg0
 	var arg1 string
-	if tmp, ok := rawArgs["Token"]; ok {
+	if tmp, ok := rawArgs["SelectObject"]; ok {
 		var err error
 		arg1, err = graphql.UnmarshalString(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["Token"] = arg1
-	var arg2 string
-	if tmp, ok := rawArgs["SelectObject"]; ok {
-		var err error
-		arg2, err = graphql.UnmarshalString(tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["SelectObject"] = arg2
+	args["SelectObject"] = arg1
 	return args, nil
 
 }
 
 func field_Query_GetTemporarilyToken_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["ID"]; ok {
+	var arg0 Base.InputCertification
+	if tmp, ok := rawArgs["Certification"]; ok {
 		var err error
-		arg0, err = graphql.UnmarshalString(tmp)
+		arg0, err = UnmarshalInputCertification(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["ID"] = arg0
-	var arg1 string
-	if tmp, ok := rawArgs["Token"]; ok {
-		var err error
-		arg1, err = graphql.UnmarshalString(tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["Token"] = arg1
+	args["Certification"] = arg0
 	return args, nil
 
 }
@@ -887,7 +824,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateUser(childComplexity, args["Token"].(Base.InputToken), args["User"].(Base.NewAccountUser)), true
+		return e.complexity.Mutation.UpdateUser(childComplexity, args["Certification"].(Base.InputCertification), args["User"].(Base.NewAccountUser)), true
 
 	case "Mutation.CreateAccount":
 		if e.complexity.Mutation.CreateAccount == nil {
@@ -911,7 +848,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.ChangePassword(childComplexity, args["Token"].(Base.InputToken), args["OldPW"].(Base.AccountPW), args["NewPW"].(Base.AccountPW), args["ConfirmationPW"].(Base.AccountPW)), true
+		return e.complexity.Mutation.ChangePassword(childComplexity, args["Certification"].(Base.InputCertification), args["OldPW"].(Base.AccountPW), args["NewPW"].(Base.AccountPW), args["ConfirmationPW"].(Base.AccountPW)), true
 
 	case "Mutation.AddCarID":
 		if e.complexity.Mutation.AddCarId == nil {
@@ -923,7 +860,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.AddCarId(childComplexity, args["Token"].(Base.InputToken), args["InputCarNews"].(Base.CarNews)), true
+		return e.complexity.Mutation.AddCarId(childComplexity, args["InputCarNews"].(Base.CarNews)), true
 
 	case "Mutation.UpdateCarName":
 		if e.complexity.Mutation.UpdateCarName == nil {
@@ -935,7 +872,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateCarName(childComplexity, args["Token"].(Base.InputToken), args["CarNameData"].(Base.NewCarName)), true
+		return e.complexity.Mutation.UpdateCarName(childComplexity, args["Certification"].(Base.InputCertification), args["CarNameData"].(Base.NewCarName)), true
 
 	case "Mutation.UpdateMonitor":
 		if e.complexity.Mutation.UpdateMonitor == nil {
@@ -1039,7 +976,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.GetUser(childComplexity, args["ID"].(string), args["Token"].(string)), true
+		return e.complexity.Query.GetUser(childComplexity, args["Certification"].(Base.InputCertification)), true
 
 	case "Query.LogIn":
 		if e.complexity.Query.LogIn == nil {
@@ -1063,7 +1000,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.LogOut(childComplexity, args["Token"].(string)), true
+		return e.complexity.Query.LogOut(childComplexity, args["Certification"].(Base.InputCertification)), true
 
 	case "Query.CheckAccountHas":
 		if e.complexity.Query.CheckAccountHas == nil {
@@ -1087,7 +1024,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.GetCarId(childComplexity, args["ID"].(string), args["Token"].(string)), true
+		return e.complexity.Query.GetCarId(childComplexity, args["Certification"].(Base.InputCertification)), true
 
 	case "Query.DeleteCarID":
 		if e.complexity.Query.DeleteCarId == nil {
@@ -1099,7 +1036,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.DeleteCarId(childComplexity, args["ID"].(string), args["Token"].(string), args["CarID"].(string)), true
+		return e.complexity.Query.DeleteCarId(childComplexity, args["Certification"].(Base.InputCertification), args["CarID"].(string)), true
 
 	case "Query.GetMonitorStatus":
 		if e.complexity.Query.GetMonitorStatus == nil {
@@ -1111,7 +1048,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.GetMonitorStatus(childComplexity, args["ID"].(string), args["Token"].(string), args["SelectObject"].(string)), true
+		return e.complexity.Query.GetMonitorStatus(childComplexity, args["Certification"].(Base.InputCertification), args["SelectObject"].(string)), true
 
 	case "Query.GetSecurityStatus":
 		if e.complexity.Query.GetSecurityStatus == nil {
@@ -1123,7 +1060,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.GetSecurityStatus(childComplexity, args["ID"].(string), args["Token"].(string), args["SelectObject"].(string)), true
+		return e.complexity.Query.GetSecurityStatus(childComplexity, args["Certification"].(Base.InputCertification), args["SelectObject"].(string)), true
 
 	case "Query.GetTemporarilyToken":
 		if e.complexity.Query.GetTemporarilyToken == nil {
@@ -1135,7 +1072,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.GetTemporarilyToken(childComplexity, args["ID"].(string), args["Token"].(string)), true
+		return e.complexity.Query.GetTemporarilyToken(childComplexity, args["Certification"].(Base.InputCertification)), true
 
 	case "SecurityData.Status":
 		if e.complexity.SecurityData.Status == nil {
@@ -2648,7 +2585,7 @@ func (ec *executionContext) _Mutation_UpdateUser(ctx context.Context, field grap
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateUser(rctx, args["Token"].(Base.InputToken), args["User"].(Base.NewAccountUser))
+		return ec.resolvers.Mutation().UpdateUser(rctx, args["Certification"].(Base.InputCertification), args["User"].(Base.NewAccountUser))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -2716,7 +2653,7 @@ func (ec *executionContext) _Mutation_ChangePassword(ctx context.Context, field 
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().ChangePassword(rctx, args["Token"].(Base.InputToken), args["OldPW"].(Base.AccountPW), args["NewPW"].(Base.AccountPW), args["ConfirmationPW"].(Base.AccountPW))
+		return ec.resolvers.Mutation().ChangePassword(rctx, args["Certification"].(Base.InputCertification), args["OldPW"].(Base.AccountPW), args["NewPW"].(Base.AccountPW), args["ConfirmationPW"].(Base.AccountPW))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -2750,7 +2687,7 @@ func (ec *executionContext) _Mutation_AddCarID(ctx context.Context, field graphq
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().AddCarID(rctx, args["Token"].(Base.InputToken), args["InputCarNews"].(Base.CarNews))
+		return ec.resolvers.Mutation().AddCarID(rctx, args["InputCarNews"].(Base.CarNews))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -2784,7 +2721,7 @@ func (ec *executionContext) _Mutation_UpdateCarName(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateCarName(rctx, args["Token"].(Base.InputToken), args["CarNameData"].(Base.NewCarName))
+		return ec.resolvers.Mutation().UpdateCarName(rctx, args["Certification"].(Base.InputCertification), args["CarNameData"].(Base.NewCarName))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -3364,7 +3301,7 @@ func (ec *executionContext) _Query_GetUser(ctx context.Context, field graphql.Co
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetUser(rctx, args["ID"].(string), args["Token"].(string))
+		return ec.resolvers.Query().GetUser(rctx, args["Certification"].(Base.InputCertification))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -3432,7 +3369,7 @@ func (ec *executionContext) _Query_LogOut(ctx context.Context, field graphql.Col
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().LogOut(rctx, args["Token"].(string))
+		return ec.resolvers.Query().LogOut(rctx, args["Certification"].(Base.InputCertification))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -3500,7 +3437,7 @@ func (ec *executionContext) _Query_GetCarID(ctx context.Context, field graphql.C
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetCarID(rctx, args["ID"].(string), args["Token"].(string))
+		return ec.resolvers.Query().GetCarID(rctx, args["Certification"].(Base.InputCertification))
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -3563,7 +3500,7 @@ func (ec *executionContext) _Query_DeleteCarID(ctx context.Context, field graphq
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().DeleteCarID(rctx, args["ID"].(string), args["Token"].(string), args["CarID"].(string))
+		return ec.resolvers.Query().DeleteCarID(rctx, args["Certification"].(Base.InputCertification), args["CarID"].(string))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -3597,7 +3534,7 @@ func (ec *executionContext) _Query_GetMonitorStatus(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetMonitorStatus(rctx, args["ID"].(string), args["Token"].(string), args["SelectObject"].(string))
+		return ec.resolvers.Query().GetMonitorStatus(rctx, args["Certification"].(Base.InputCertification), args["SelectObject"].(string))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -3631,7 +3568,7 @@ func (ec *executionContext) _Query_GetSecurityStatus(ctx context.Context, field 
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetSecurityStatus(rctx, args["ID"].(string), args["Token"].(string), args["SelectObject"].(string))
+		return ec.resolvers.Query().GetSecurityStatus(rctx, args["Certification"].(Base.InputCertification), args["SelectObject"].(string))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -3665,7 +3602,7 @@ func (ec *executionContext) _Query_GetTemporarilyToken(ctx context.Context, fiel
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetTemporarilyToken(rctx, args["ID"].(string), args["Token"].(string))
+		return ec.resolvers.Query().GetTemporarilyToken(rctx, args["Certification"].(Base.InputCertification))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -4372,14 +4309,8 @@ func (ec *executionContext) _Users(ctx context.Context, sel ast.SelectionSet, ob
 			}
 		case "SiginHistory":
 			out.Values[i] = ec._Users_SiginHistory(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
 		case "LogoutHistory":
 			out.Values[i] = ec._Users_LogoutHistory(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4548,16 +4479,45 @@ func (ec *executionContext) _Users_SiginHistory(ctx context.Context, field graph
 		return obj.SiginHistory, nil
 	})
 	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(Base.Historys)
+	res := resTmp.([]Base.Historys)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 
-	return ec._Historys(ctx, field.Selections, &res)
+	arr1 := make(graphql.Array, len(res))
+	var wg sync.WaitGroup
+
+	isLen1 := len(res) == 1
+	if !isLen1 {
+		wg.Add(len(res))
+	}
+
+	for idx1 := range res {
+		idx1 := idx1
+		rctx := &graphql.ResolverContext{
+			Index:  &idx1,
+			Result: &res[idx1],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(idx1 int) {
+			if !isLen1 {
+				defer wg.Done()
+			}
+			arr1[idx1] = func() graphql.Marshaler {
+
+				return ec._Historys(ctx, field.Selections, &res[idx1])
+			}()
+		}
+		if isLen1 {
+			f(idx1)
+		} else {
+			go f(idx1)
+		}
+
+	}
+	wg.Wait()
+	return arr1
 }
 
 // nolint: vetshadow
@@ -4576,16 +4536,45 @@ func (ec *executionContext) _Users_LogoutHistory(ctx context.Context, field grap
 		return obj.LogoutHistory, nil
 	})
 	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(Base.Historys)
+	res := resTmp.([]Base.Historys)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 
-	return ec._Historys(ctx, field.Selections, &res)
+	arr1 := make(graphql.Array, len(res))
+	var wg sync.WaitGroup
+
+	isLen1 := len(res) == 1
+	if !isLen1 {
+		wg.Add(len(res))
+	}
+
+	for idx1 := range res {
+		idx1 := idx1
+		rctx := &graphql.ResolverContext{
+			Index:  &idx1,
+			Result: &res[idx1],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(idx1 int) {
+			if !isLen1 {
+				defer wg.Done()
+			}
+			arr1[idx1] = func() graphql.Marshaler {
+
+				return ec._Historys(ctx, field.Selections, &res[idx1])
+			}()
+		}
+		if isLen1 {
+			f(idx1)
+		} else {
+			go f(idx1)
+		}
+
+	}
+	wg.Wait()
+	return arr1
 }
 
 var __DirectiveImplementors = []string{"__Directive"}
@@ -6087,8 +6076,8 @@ func UnmarshalCarNews(v interface{}) (Base.CarNews, error) {
 	return it, nil
 }
 
-func UnmarshalInputToken(v interface{}) (Base.InputToken, error) {
-	var it Base.InputToken
+func UnmarshalInputCertification(v interface{}) (Base.InputCertification, error) {
+	var it Base.InputCertification
 	var asMap = v.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -6096,6 +6085,12 @@ func UnmarshalInputToken(v interface{}) (Base.InputToken, error) {
 		case "Token":
 			var err error
 			it.Token, err = graphql.UnmarshalString(v)
+			if err != nil {
+				return it, err
+			}
+		case "Account":
+			var err error
+			it.Account, err = graphql.UnmarshalString(v)
 			if err != nil {
 				return it, err
 			}
@@ -6315,82 +6310,13 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var parsedSchema = gqlparser.MustLoadSchema(
-	&ast.Source{Name: "schema.graphql", Input: `schema {
-  query: Query
-  mutation: Mutation
-}
-# ===============================================================================
-# ===========================================================[Query]
-type Query {
-  # ============================================[User]
-  GetUser(ID: String!,Token: String!): Users!
-  # ============================================[Account]
-  LogIn(ID: String!, Password: String!): LogInToken!
-  LogOut(Token: String!): StatusData!
-  CheckAccountHas(ID: String!): AccountHas!
-  # ============================================[CarID]
-  GetCarID(ID: String!,Token: String!): [CarData!]
-  DeleteCarID(ID: String!,Token: String!,CarID: String!): StatusData!
-  # ============================================[Status]
-  # ------------------------------------[Monitor]
-  GetMonitorStatus(ID: String!,Token: String!,SelectObject: String!): MonitorData!
-  # -----------------------------------[Security]
-  GetSecurityStatus(ID: String!,Token: String!,SelectObject: String!): SecurityData!
-  # ============================================[Token]
-  GetTemporarilyToken(ID: String!,Token: String!): TemporarilyTokenData!
-  # ============================================
-}
-# ===========================================================[Mutation]
-type Mutation {
-  # ============================================[User]
-  UpdateUser(
-    Token: InputToken!
-    User:NewAccountUser!
-    ):CreateReturn!
-  # ============================================[Account]
-  CreateAccount(
-    AccountIDPW: NewAccountIDPW!
-    User:NewAccountUser!
-    ):CreateReturn!
-  ChangePassword(
-    Token: InputToken!
-    OldPW: AccountPW!
-    NewPW: AccountPW!
-    ConfirmationPW: AccountPW!
-  ):CreateReturn!
-  # ============================================[CarID]
-  AddCarID(
-    Token: InputToken!
-    InputCarNews: CarNews!
-  ): CarIDReturn!
-  UpdateCarName(
-    Token: InputToken!
-    CarNameData: NewCarName!
-  ):CreateReturn!
-  # ============================================[Status]
-  # ------------------------------------[Monitor]
-  UpdateMonitor(
-    InputMonitorData: SecurityStatus!
-    ):CreateReturn!
-  # -----------------------------------[Security]
-  UpdateSecurity(
-    InputSecurityData:SecurityStatus!
-  ):CreateReturn!
-  AddSecurity(
-    InputSecurityData:SecurityStatus!
-  ):CreateReturn!
-  # ============================================
-}
-# ===============================================================================
-# ===========================================================[Query]
-# ============================================[User]
-type Users {
+	&ast.Source{Name: "BaseType.graphql", Input: `type Users {
   Status: StatusData!
   Car: [CarData!]
   Profile: Profiles!
   Accesse: Accesses!
-  SiginHistory: Historys!
-  LogoutHistory: Historys!
+  SiginHistory: [Historys!]
+  LogoutHistory: [Historys!]
 }
 # ---------------------------------
 type Profiles {
@@ -6488,8 +6414,9 @@ input NewAccountUser {
 input AccountPW {
   Password: String!
 }
-input InputToken {
+input InputCertification {
   Token: String!
+  Account: String!
 }
 # ============================================[CarID]
 input CarNews {
@@ -6526,17 +6453,75 @@ input SecurityStatus {
   Name: String!
   SelectObject: String!
   StatusCode: Int!
-}
-# ===============================================================================
-# ============================================[Common]
-type StatusData {
+}`},
+	&ast.Source{Name: "CommType.graphql", Input: `type StatusData {
   StatusCode: Int!
   Description: String!
 }
 type CreateReturn {
   Status: StatusData!
   ID: String!
+}`},
+	&ast.Source{Name: "Mutation.graphql", Input: `type Mutation {
+  # ============================================[User]
+  UpdateUser(
+    Certification: InputCertification!
+    User: NewAccountUser!
+  ): CreateReturn!
+  # ============================================[Account]
+  CreateAccount(
+    AccountIDPW: NewAccountIDPW!
+    User: NewAccountUser!
+  ): CreateReturn!
+  ChangePassword(
+    Certification: InputCertification!
+    OldPW: AccountPW!
+    NewPW: AccountPW!
+    ConfirmationPW: AccountPW!
+  ): CreateReturn!
+  # ============================================[CarID]
+  AddCarID(InputCarNews: CarNews!): CarIDReturn!
+  UpdateCarName(
+    Certification: InputCertification!
+    CarNameData: NewCarName!
+  ): CreateReturn!
+  # ============================================[Status]
+  # ------------------------------------[Monitor]
+  UpdateMonitor(InputMonitorData: SecurityStatus!): CreateReturn!
+  # -----------------------------------[Security]
+  UpdateSecurity(InputSecurityData: SecurityStatus!): CreateReturn!
+  AddSecurity(InputSecurityData: SecurityStatus!): CreateReturn!
+  # ============================================
 }
-# ===============================================================================
 `},
+	&ast.Source{Name: "Query.graphql", Input: `type Query {
+  # ============================================[User]
+  GetUser(Certification: InputCertification!): Users!
+  # ============================================[Account]
+  LogIn(ID: String!, Password: String!): LogInToken!
+  LogOut(Certification: InputCertification!): StatusData!
+  CheckAccountHas(ID: String!): AccountHas!
+  # ============================================[CarID]
+  GetCarID(Certification: InputCertification!): [CarData!]
+  DeleteCarID(Certification: InputCertification!, CarID: String!): StatusData!
+  # ============================================[Status]
+  # ------------------------------------[Monitor]
+  GetMonitorStatus(
+    Certification: InputCertification!
+    SelectObject: String!
+  ): MonitorData!
+  # -----------------------------------[Security]
+  GetSecurityStatus(
+    Certification: InputCertification!
+    SelectObject: String!
+  ): SecurityData!
+  # ============================================[Token]
+  GetTemporarilyToken(Certification: InputCertification!): TemporarilyTokenData!
+  # ============================================
+}
+`},
+	&ast.Source{Name: "schema.graphql", Input: `schema {
+  query: Query
+  mutation: Mutation
+}`},
 )

@@ -1,0 +1,8 @@
+type StatusData {
+  StatusCode: Int!
+  Description: String!
+}
+type CreateReturn {
+  Status: StatusData!
+  ID: String!
+}
