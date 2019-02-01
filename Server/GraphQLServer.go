@@ -14,7 +14,9 @@ import (
 func StartGraphQLServer() {
 	// ==============================================
 	CORS := cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"POST"},
+		AllowHeaders:     []string{"Origin"},
+		AllowAllOrigins:  true,
 		AllowCredentials: true,
 	})
 	// --------------------------------------
