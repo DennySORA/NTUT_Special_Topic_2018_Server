@@ -1,8 +1,8 @@
 package main
 
 import (
-	"SORA/Project/Go_Back_End_SEGA_Project/Config"
-	"SORA/Project/Go_Back_End_SEGA_Project/Server"
+	"SORA/Config"
+	"SORA/Server"
 )
 
 func main() {

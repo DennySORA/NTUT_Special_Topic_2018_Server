@@ -1,8 +1,8 @@
 package Server
 
 import (
-	"SORA/Project/Go_Back_End_SEGA_Project/Config"
-	"SORA/Project/Go_Back_End_SEGA_Project/GraphQLModel"
+	"SORA/Config"
+	"SORA/GraphQLModel"
 	"log"
 	"net/http"
 
@@ -14,9 +14,7 @@ import (
 func StartGraphQLServer() {
 	// ==============================================
 	CORS := cors.New(cors.Config{
-		AllowMethods:     []string{"POST"},
-		AllowHeaders:     []string{"Origin"},
-		AllowAllOrigins:  true,
+		AllowOrigins:     []string{"*"},
 		AllowCredentials: true,
 	})
 	// --------------------------------------

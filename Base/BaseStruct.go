@@ -14,7 +14,7 @@ type AccountHas struct {
 	Has    bool       `json:"Has"`
 }
 
-type AccountPW struct {
+type AccountPw struct {
 	Password string `json:"Password"`
 }
 
@@ -84,7 +84,7 @@ type MonitorStatusData struct {
 	RefreshTime *string `json:"RefreshTime"`
 }
 
-type NewAccountIDPW struct {
+type NewAccountIDPw struct {
 	Account  string `json:"Account"`
 	Password string `json:"Password"`
 }

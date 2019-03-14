@@ -1,7 +1,6 @@
 package MongoDB
 
 import (
-	// "fmt"
 	"fmt"
 	"math/rand"
 	"strconv"

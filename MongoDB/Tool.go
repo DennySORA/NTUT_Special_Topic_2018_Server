@@ -1,7 +1,7 @@
 package MongoDB
 
 import (
-	"SORA/Project/Go_Back_End_SEGA_Project/Base"
+	"SORA/Base"
 	"encoding/hex"
 	"fmt"
 	"strconv"
@@ -43,7 +43,7 @@ func UserConvert(User Base.NewAccountUser, ID string) bson.M {
 	}
 }
 
-func ConvertRegisters(AccountIDPW Base.NewAccountIDPW, Oid bson.ObjectId) bson.M {
+func ConvertRegisters(AccountIDPW Base.NewAccountIDPw, Oid bson.ObjectId) bson.M {
 	TempTime := GetUTCTime()
 	return bson.M{
 		"_id":         Oid,

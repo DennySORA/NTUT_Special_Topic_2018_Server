@@ -1,8 +1,8 @@
 package MongoDB
 
 import (
-	"SORA/Project/Go_Back_End_SEGA_Project/Base"
-	"SORA/Project/Go_Back_End_SEGA_Project/Config"
+	"SORA/Base"
+	"SORA/Config"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -10,7 +10,7 @@ import (
 
 // ============================================[CreateAccount]
 
-func DBCreateAccount(AccountIDPW Base.NewAccountIDPW, AccountData Base.NewAccountUser) Base.CreateReturn {
+func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccountUser) Base.CreateReturn {
 	// ====================================[DBLink]
 	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()

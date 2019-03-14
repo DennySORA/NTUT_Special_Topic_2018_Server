@@ -1,8 +1,8 @@
 package Controller
 
 import (
-	"SORA/Project/Go_Back_End_SEGA_Project/Base"
-	"SORA/Project/Go_Back_End_SEGA_Project/MongoDB"
+	"SORA/Base"
+	"SORA/MongoDB"
 )
 
 // ============================================[GetCarID]

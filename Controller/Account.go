@@ -1,13 +1,13 @@
 package Controller
 
 import (
-	"SORA/Project/Go_Back_End_SEGA_Project/Base"
-	"SORA/Project/Go_Back_End_SEGA_Project/MongoDB"
+	"SORA/Base"
+	"SORA/MongoDB"
 )
 
 // ============================================[CreateAccount]
 
-func ExaminationCreateAccount(AccountIDPW Base.NewAccountIDPW, User Base.NewAccountUser) (Base.CreateReturn, error) {
+func ExaminationCreateAccount(AccountIDPW Base.NewAccountIDPw, User Base.NewAccountUser) (Base.CreateReturn, error) {
 	Ok, number := RoutineInspection(AccountIDPW.Account, AccountIDPW.Password)
 	if Ok == false {
 		return Base.CreateReturn{Status: Base.SelfErrors(number)}, nil

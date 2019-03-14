@@ -8,6 +8,3 @@
 - Merge "Token" and "Account" to Input certification parameter of API.
 - Add UpdateUser function.
 - Add LogOut function.
-
-## 2019/02/01
--  Fix CORS.

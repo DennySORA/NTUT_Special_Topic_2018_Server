@@ -1,8 +1,8 @@
 package MongoDB
 
 import (
-	"SORA/Project/Go_Back_End_SEGA_Project/Base"
-	"SORA/Project/Go_Back_End_SEGA_Project/Config"
+	"SORA/Base"
+	"SORA/Config"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
