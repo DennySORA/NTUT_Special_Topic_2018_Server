@@ -43,7 +43,7 @@ func DBGetCarID(Account string, Token string) ([]Base.CarData, int) {
 
 // ============================================[GetUser]
 
-func DBUpdateUser(Account string, AccountData Base.NewAccountUser) Base.CreateReturn {
+func DBUpdateUser(Account string, AccountData Base.NewAccountUser) *Base.CreateReturn {
 	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()
 	ERRs(err)
@@ -53,8 +53,8 @@ func DBUpdateUser(Account string, AccountData Base.NewAccountUser) Base.CreateRe
 	User = bson.M{"$set": bson.M{"Profile": User}}
 	err = Collection.Update(bson.M{"Email": Account}, User)
 	if err != nil {
-		return Base.CreateReturn{Status: Base.SelfErrors(0)}
+		return &Base.CreateReturn{Status: Base.SelfErrors(0)}
 	} else {
-		return Base.CreateReturn{Status: Base.SelfSuccess(8), ID: Account}
+		return &Base.CreateReturn{Status: Base.SelfSuccess(8), ID: Account}
 	}
 }

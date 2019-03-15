@@ -23,14 +23,14 @@ func ExaminationGetCarID(Certification Base.InputCertification) ([]Base.CarData,
 }
 
 // ============================================[GetTemporarilyToken]
-func ExaminationGetTemporarilyToken(Certification Base.InputCertification) (Base.TemporarilyTokenData, error) {
+func ExaminationGetTemporarilyToken(Certification Base.InputCertification) (*Base.TemporarilyTokenData, error) {
 	Ok, number := RoutineInspection(Certification.Account, Certification.Token)
 	if Ok == false {
-		return Base.TemporarilyTokenData{Status: Base.SelfErrors(number)}, nil
+		return &Base.TemporarilyTokenData{Status: Base.SelfErrors(number)}, nil
 	} else if MongoDB.TokenCheck(Certification.Account, Certification.Token, 1) == false {
-		return Base.TemporarilyTokenData{Status: Base.SelfErrors(6)}, nil
+		return &Base.TemporarilyTokenData{Status: Base.SelfErrors(6)}, nil
 	} else {
-		return Base.TemporarilyTokenData{
+		return &Base.TemporarilyTokenData{
 			Status:   Base.SelfSuccess(3),
 			Token:    MongoDB.GetAccountToken(Certification.Account, "", 2),
 			GetTimes: MongoDB.GetUTCTime()}, nil
@@ -38,18 +38,18 @@ func ExaminationGetTemporarilyToken(Certification Base.InputCertification) (Base
 }
 
 // ============================================[AddCarID]
-func ExaminationAddCarID(InputCarNews Base.CarNews) (Base.CarIDReturn, error) {
+func ExaminationAddCarID(InputCarNews Base.CarNews) (*Base.CarIDReturn, error) {
 	Ok, number := RoutineInspection(InputCarNews.ID, InputCarNews.TemporarilyToken)
 	if Ok == false {
-		return Base.CarIDReturn{Status: Base.SelfErrors(number)}, nil
+		return &Base.CarIDReturn{Status: Base.SelfErrors(number)}, nil
 	} else if MongoDB.TokenCheck(InputCarNews.ID, InputCarNews.TemporarilyToken, 2) == false {
-		return Base.CarIDReturn{Status: Base.SelfErrors(6)}, nil
+		return &Base.CarIDReturn{Status: Base.SelfErrors(6)}, nil
 	} else {
 		Token, Status := MongoDB.DBAddCarID(InputCarNews.ID, InputCarNews.CarID, InputCarNews.CarName)
 		if Status != 0 {
-			return Base.CarIDReturn{Status: Base.SelfErrors(Status)}, nil
+			return &Base.CarIDReturn{Status: Base.SelfErrors(Status)}, nil
 		} else {
-			return Base.CarIDReturn{
+			return &Base.CarIDReturn{
 				Status: Base.SelfSuccess(4),
 				ID:     InputCarNews.ID,
 				CarID:  InputCarNews.CarID,

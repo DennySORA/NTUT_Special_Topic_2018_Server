@@ -10,7 +10,7 @@ import (
 
 // ============================================[CreateAccount]
 
-func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccountUser) Base.CreateReturn {
+func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccountUser) *Base.CreateReturn {
 	// ====================================[DBLink]
 	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()
@@ -34,12 +34,12 @@ func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccoun
 	err = Collection.Insert(Register)
 	ERRs(err)
 	// -------------------------------------
-	return Base.CreateReturn{Status: Base.SelfSuccess(1), ID: AccountIDPW.Account}
+	return &Base.CreateReturn{Status: Base.SelfSuccess(1), ID: AccountIDPW.Account}
 }
 
 // ============================================[LogIn]
 
-func DBLogIn(Account string, Password string) Base.LogInToken {
+func DBLogIn(Account string, Password string) *Base.LogInToken {
 	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()
 	ERRs(err)
@@ -50,7 +50,7 @@ func DBLogIn(Account string, Password string) Base.LogInToken {
 	err = Collection.Find(bson.M{"Accountid": Account, "Password": GetSHAString(Password)}).One(&result)
 	// -------------------------------------
 	if err != nil {
-		return Base.LogInToken{Status: Base.SelfErrors(4)}
+		return &Base.LogInToken{Status: Base.SelfErrors(4)}
 	} else {
 		ReturnData := ConverLogInToken(Account, 1)
 		// -------------------------------------
@@ -60,16 +60,16 @@ func DBLogIn(Account string, Password string) Base.LogInToken {
 		data := bson.M{"$addToSet": bson.M{
 			"SiginHistory": bson.M{
 				"Times":    GetUTCTime(),
-				"UseToken": ReturnData.AccountToken[:10],
+				"UseToken": ReturnData.AccountToken,
 				"Types":    "Null",
 				"Device":   "Null",
 			}}}
 		// ========================================
 		err = Collection.Update(selects, data)
 		if err != nil {
-			return Base.LogInToken{Status: Base.SelfErrors(4)}
+			return &Base.LogInToken{Status: Base.SelfErrors(4)}
 		} else {
-			return ReturnData
+			return &ReturnData
 		}
 		// -------------------------------------
 	}
@@ -77,10 +77,11 @@ func DBLogIn(Account string, Password string) Base.LogInToken {
 
 // ============================================[LogOut]
 
-func DBLogOut(Account string, Token string) Base.StatusData {
+func DBLogOut(Account string, Token string) *Base.StatusData {
 	Invalid := TokenInvalid(Account, Token, 1)
 	if Invalid == false {
-		return Base.SelfErrors(8)
+		returnData := Base.SelfErrors(8)
+		return &returnData
 	}
 	// ========================================
 	Session, err := mgo.Dial(Config.DatabaseURL)
@@ -93,16 +94,18 @@ func DBLogOut(Account string, Token string) Base.StatusData {
 	data := bson.M{"$addToSet": bson.M{
 		"LogoutHistory": bson.M{
 			"Times":    GetUTCTime(),
-			"UseToken": Token[:10],
+			"UseToken": Token,
 			"Types":    "Null",
 			"Device":   "Null",
 		}}}
 	// ========================================
 	err = Collection.Update(selects, data)
 	if err != nil {
-		return Base.SelfErrors(0)
+		returnData := Base.SelfErrors(0)
+		return &returnData
 	} else {
-		return Base.SelfSuccess(9)
+		returnData := Base.SelfSuccess(9)
+		return &returnData
 	}
 	// -------------------------------------
 }

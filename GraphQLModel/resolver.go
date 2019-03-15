@@ -2,6 +2,7 @@ package GraphQLModel
 
 import (
 	"SORA/Base"
+	"SORA/Controller"
 	"context"
 )
 
@@ -19,16 +20,16 @@ func (r *Resolver) Query() QueryResolver {
 type mutationResolver struct{ *Resolver }
 
 func (r *mutationResolver) UpdateUser(ctx context.Context, certification Base.InputCertification, user Base.NewAccountUser) (*Base.CreateReturn, error) {
-	panic("not implemented")
+	return Controller.ExaminationUpdateUser(certification, user)
 }
 func (r *mutationResolver) CreateAccount(ctx context.Context, accountIDPw Base.NewAccountIDPw, user Base.NewAccountUser) (*Base.CreateReturn, error) {
-	panic("not implemented")
+	return Controller.ExaminationCreateAccount(accountIDPw, user)
 }
 func (r *mutationResolver) ChangePassword(ctx context.Context, certification Base.InputCertification, oldPw Base.AccountPw, newPw Base.AccountPw, confirmationPw Base.AccountPw) (*Base.CreateReturn, error) {
 	panic("not implemented")
 }
 func (r *mutationResolver) AddCarID(ctx context.Context, inputCarNews Base.CarNews) (*Base.CarIDReturn, error) {
-	panic("not implemented")
+	return Controller.ExaminationAddCarID(inputCarNews)
 }
 func (r *mutationResolver) UpdateCarName(ctx context.Context, certification Base.InputCertification, carNameData Base.NewCarName) (*Base.CreateReturn, error) {
 	panic("not implemented")
@@ -46,19 +47,19 @@ func (r *mutationResolver) AddSecurity(ctx context.Context, inputSecurityData Ba
 type queryResolver struct{ *Resolver }
 
 func (r *queryResolver) GetUser(ctx context.Context, certification Base.InputCertification) (*Base.Users, error) {
-	panic("not implemented")
+	return Controller.ExaminationGetUser(certification)
 }
 func (r *queryResolver) LogIn(ctx context.Context, id string, password string) (*Base.LogInToken, error) {
-	panic("not implemented")
+	return Controller.ExaminationLogIn(id, password)
 }
 func (r *queryResolver) LogOut(ctx context.Context, certification Base.InputCertification) (*Base.StatusData, error) {
-	panic("not implemented")
+	return Controller.ExaminationLogOut(certification)
 }
 func (r *queryResolver) CheckAccountHas(ctx context.Context, id string) (*Base.AccountHas, error) {
-	panic("not implemented")
+	return Controller.ExaminationCheckAccountHas(id)
 }
 func (r *queryResolver) GetCarID(ctx context.Context, certification Base.InputCertification) ([]Base.CarData, error) {
-	panic("not implemented")
+	return Controller.ExaminationGetCarID(certification)
 }
 func (r *queryResolver) DeleteCarID(ctx context.Context, certification Base.InputCertification, carID string) (*Base.StatusData, error) {
 	panic("not implemented")
@@ -70,5 +71,5 @@ func (r *queryResolver) GetSecurityStatus(ctx context.Context, certification Bas
 	panic("not implemented")
 }
 func (r *queryResolver) GetTemporarilyToken(ctx context.Context, certification Base.InputCertification) (*Base.TemporarilyTokenData, error) {
-	panic("not implemented")
+	return Controller.ExaminationGetTemporarilyToken(certification)
 }
