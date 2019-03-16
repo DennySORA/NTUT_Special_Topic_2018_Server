@@ -3,6 +3,7 @@ package Server
 import (
 	"SORA/Config"
 	"SORA/GraphQLModel"
+	"SORA/Socket"
 	"log"
 	"net/http"
 
@@ -20,7 +21,7 @@ func StartGraphQLServer() {
 	// --------------------------------------
 	router := gin.Default()
 	router.Use(CORS)
-	// ==============================================
+	// ==============================================[GraphQL]
 	router.GET("/", gin.WrapF(handler.Playground("GraphQL playground", "/query")))
 	router.POST("/query", gin.WrapF(handler.GraphQL(
 		GraphQLModel.NewExecutableSchema(
@@ -29,7 +30,9 @@ func StartGraphQLServer() {
 			},
 		),
 	)))
-	// ==============================================
+	// ==============================================[Socket]
+	router.GET("/socket", gin.WrapF(Socket.LinkSocket))
+	// ==============================================[Test]
 
 	router.GET("/loaderio-434253d2ac58483eba54001e1f0f0d69.txt", CertificationFunction)
 

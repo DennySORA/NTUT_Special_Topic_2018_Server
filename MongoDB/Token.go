@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	uuid "gitlab.paradise-soft.com.tw/thirdparty-rsc/vendors/github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 var TokenBox map[string]map[string]map[string]string
@@ -26,7 +26,7 @@ func GetAccountToken(Account string, others string, Mode int) string {
 	Token := ""
 	if Mode == 1 {
 		rand.Seed(time.Now().UTC().UnixNano())
-		Token = uuid.Must(uuid.NewV4()).String()
+		Token = uuid.NewV4().String()
 		TokenBox[Account][Token] = make(map[string]string)
 		TokenBox[Account][Token]["Level"] = others // This is Level number
 		TokenBox[Account][Token]["Token"] = Token
@@ -40,7 +40,7 @@ func GetAccountToken(Account string, others string, Mode int) string {
 		TokenBox[Account][Token]["Time"] = strconv.FormatInt(time.Now().Unix(), 10)
 		return Token
 	} else if Mode == 3 {
-		Token = uuid.Must(uuid.NewV4()).String()
+		Token = uuid.NewV4().String()
 		TokenBox[Account]["CarToken"] = make(map[string]string)
 		TokenBox[Account]["CarToken"][Token] = others // This is CarID
 		return Token
