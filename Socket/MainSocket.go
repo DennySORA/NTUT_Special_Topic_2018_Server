@@ -48,7 +48,7 @@ func LinkSocket(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	Pools.Schedule(idName, id)
+	go Pools.Schedule(idName, id)
 }
 
 // ========================================================
@@ -69,7 +69,7 @@ func (p *Pool) Schedule(name string, id int) {
 		}
 		p.Works[name].MakeListen(id)
 	} else {
-		p.Works[name].GetMessage(id)
+		go p.Works[name].GetMessage(id)
 	}
 }
 
