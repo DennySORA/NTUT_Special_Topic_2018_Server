@@ -10,6 +10,7 @@ import (
 
 	"github.com/99designs/gqlgen/handler"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,6 +23,7 @@ func StartGraphQLServer() {
 	})
 	// -----------------------------------------------[Set User]
 	router := gin.Default()
+	pprof.Register(router)
 	router.Use(CORS)
 	// -----------------------------------------------[Log]
 	logFile, err := os.Create("./log/restful_server.log")
@@ -43,6 +45,7 @@ func StartGraphQLServer() {
 	router.GET("/socket", gin.WrapF(Socket.LinkSocket))
 	// ==============================================[Test]
 	router.GET("/loaderio-434253d2ac58483eba54001e1f0f0d69.txt", CertificationFunction)
+	// ==============================================[pprof]
 	// ==============================================[RunTLS]
 	Base.Error.Panicln(
 		router.RunTLS(

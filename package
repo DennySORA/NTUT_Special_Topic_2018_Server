@@ -9,3 +9,4 @@ go get -u -v golang.org/x/crypto
 go get -u -v gopkg.in/mgo.v2
 go get -u -v github.com/rs/cors
 go get -u -v github.com/satori/go.uuid
+go get -u -v github.com/gin-contrib/pprof
