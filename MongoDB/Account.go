@@ -14,7 +14,6 @@ func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccoun
 	// ====================================[DBLink]
 	Session, err := mgo.Dial(Config.DatabaseURL)
 	defer Session.Close()
-	ERRs(err)
 	Database := Session.DB(Config.DatabaseName)
 	Collection := Database.C("Register")
 	// -------------------------------------

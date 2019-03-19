@@ -8,10 +8,12 @@ require (
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-chi/chi v4.0.2+incompatible // indirect
 	github.com/gogo/protobuf v1.2.1 // indirect
+	github.com/google/pprof v0.0.0-20190309163659-77426154d546 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/mux v1.7.0 // indirect
 	github.com/gorilla/websocket v1.4.0
 	github.com/hashicorp/golang-lru v0.5.1 // indirect
+	github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6 // indirect
 	github.com/kisielk/errcheck v1.2.0 // indirect
 	github.com/kr/pty v1.1.3 // indirect
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
@@ -20,6 +22,7 @@ require (
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd // indirect
 	github.com/stretchr/objx v0.1.1 // indirect
 	github.com/vektah/gqlparser v1.1.2
+	golang.org/x/arch v0.0.0-20190312162104-788fe5ffcd8c // indirect
 	golang.org/x/crypto v0.0.0-20190313024323-a1f597ede03a
 	golang.org/x/net v0.0.0-20190313220215-9f648a60d977 // indirect
 	golang.org/x/sys v0.0.0-20190312061237-fead79001313 // indirect

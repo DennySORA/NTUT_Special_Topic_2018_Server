@@ -1,14 +1,15 @@
 package main
 
 import (
-	"SORA/Config"
-	"SORA/Server"
+	"SORA/Command"
+	"log"
 )
 
 func main() {
-	Stop := make(chan int)
-	if Config.StartGraphQLServer {
-		Server.StartGraphQLServer()
-	}
-	<-Stop
+	defer func() {
+		if err := recover(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+	Command.Start()
 }
