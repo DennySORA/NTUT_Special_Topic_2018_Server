@@ -5,6 +5,7 @@ import (
 	"SORA/Server"
 	"os"
 	"os/signal"
+	"runtime/trace"
 	"syscall"
 )
 
@@ -34,4 +35,5 @@ func Stopfunc(args ...interface{}) {
 			arg.(*os.File).Close()
 		}
 	}
+	trace.Stop()
 }
