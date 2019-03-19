@@ -1,10 +1,11 @@
-go get -u github.com/99designs/gqlgen/
-go get -u github.com/go-chi/chi
-go get -u github.com/agnivade/levenshtein
-go get -u github.com/go-chi/chi
-go get -u github.com/gorilla/websocket
-go get -u github.com/hashicorp/golang-lru
-go get -u github.com/vektah/gqlparser
-go get -u golang.org/x/crypto
-go get -u gopkg.in/mgo.v2
-go get -u github.com/rs/cors
+go get -u -v github.com/99designs/gqlgen/
+go get -u -v github.com/go-chi/chi
+go get -u -v github.com/agnivade/levenshtein
+go get -u -v github.com/go-chi/chi
+go get -u -v github.com/gorilla/websocket
+go get -u -v github.com/hashicorp/golang-lru
+go get -u -v github.com/vektah/gqlparser
+go get -u -v golang.org/x/crypto
+go get -u -v gopkg.in/mgo.v2
+go get -u -v github.com/rs/cors
+go get -u -v github.com/satori/go.uuid

@@ -1,0 +1,144 @@
+type Users {
+  Status: StatusData!
+  Car: [CarData!]
+  Profile: Profiles!
+  Accesse: Accesses!
+  SiginHistory: [Historys!]
+  LogoutHistory: [Historys!]
+}
+# ---------------------------------
+type Profiles {
+  Name: String!
+  Gender: Int!
+  Phone: Phones!
+}
+type Phones {
+  Country: String!
+  Number: String!
+}
+type Accesses {
+  Certification: Boolean!
+  PermitTime: String!
+  Level: Int!
+  Permit_log: [PermitLogs]
+}
+type PermitLogs {
+  Level: Int!
+  Times: String!
+  Authority: String!
+}
+type Historys {
+  Times: String!
+  UseToken: String!
+  Types: Int!
+  Device: String!
+}
+# ---------------------------------
+# ============================================[Account]
+type LogInToken {
+  Status: StatusData!
+  GetTimes: String!
+  AccountToken: String!
+  AccountID: String!
+}
+type AccountHas {
+  Status: StatusData!
+  Has: Boolean!
+}
+# ============================================[CarID]
+type CarData {
+  Status: StatusData!
+  CarID: String!
+  CarName: String!
+  RefreshTime: String
+  CreateTime: String
+}
+# ============================================[Status]
+# ------------------------------------[Monitor]
+type MonitorData {
+  Status: StatusData!
+  WaterStatus: MonitorStatusData!
+  GasolineStatus: MonitorStatusData!
+  BatteryStatus: MonitorStatusData!
+}
+# ---------------------------------
+type MonitorStatusData {
+  StatusCode: Int!
+  RefreshTime: String
+}
+# -----------------------------------[Security]
+type SecurityData {
+  Status: StatusData!
+  DoorStatus: [SecurityStatusData]!
+  WindowStatus: [SecurityStatusData]!
+  LightStatus: [SecurityStatusData]!
+}
+# ---------------------------------
+type SecurityStatusData {
+  Name: String!
+  StatusCode: Int!
+  RefreshTime: String
+}
+# ---------------------------------
+# ============================================[Token]
+type TemporarilyTokenData {
+  Status: StatusData!
+  Token: String!
+  GetTimes: String!
+}
+# ===========================================================[Mutation]
+# ============================================[Account][User]
+input NewAccountIDPW {
+  Account: String!
+  Password: String!
+}
+input NewAccountUser {
+  Name: String!
+  Gender: Int!
+  Country: String!
+  Number: String!
+}
+# ---------------------------------
+input AccountPW {
+  Password: String!
+}
+input InputCertification {
+  Token: String!
+  Account: String!
+}
+# ============================================[CarID]
+input CarNews {
+  ID: String!
+  CarID: String!
+  CarName: String!
+  TemporarilyToken: String!
+}
+input NewCarName {
+  ID: String!
+  CarID: String!
+  CarName: String!
+}
+type CarIDReturn {
+  Status: StatusData!
+  ID: String!
+  CarID: String!
+  Token: String!
+}
+# ============================================[Status]
+# ------------------------------------[Monitor]
+input MonitorStatus {
+  ID: String!
+  Token: String!
+  CarID: String!
+  SelectObject: String!
+  StatusCode: Int!
+}
+# -----------------------------------[Security]
+input SecurityStatus {
+  ID: String!
+  Token: String!
+  CarID: String!
+  Name: String!
+  SelectObject: String!
+  StatusCode: Int!
+}
