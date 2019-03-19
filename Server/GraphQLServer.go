@@ -15,8 +15,9 @@ import (
 func StartGraphQLServer() {
 	// ==============================================
 	CORS := cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowAllOrigins:  true,
 		AllowCredentials: true,
+		AllowWebSockets:  true,
 	})
 	// --------------------------------------
 	router := gin.Default()
