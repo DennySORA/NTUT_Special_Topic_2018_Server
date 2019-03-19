@@ -1,14 +1,16 @@
 package Server
 
 import (
+	"SORA/Base"
 	"SORA/Config"
 	"SORA/GraphQLModel"
 	"SORA/Socket"
-	"log"
 	"net/http"
+	"os"
 
 	"github.com/99designs/gqlgen/handler"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,9 +21,17 @@ func StartGraphQLServer() {
 		AllowCredentials: true,
 		AllowWebSockets:  true,
 	})
-	// --------------------------------------
+	// -----------------------------------------------[Set User]
 	router := gin.Default()
+	pprof.Register(router)
 	router.Use(CORS)
+	// -----------------------------------------------[Log]
+	logFile, err := os.Create("./log/restful_server.log")
+	if err != nil {
+		Base.Warning.Println(err)
+	} else {
+		router.Use(gin.LoggerWithWriter(logFile))
+	}
 	// ==============================================[GraphQL]
 	router.GET("/", gin.WrapF(handler.Playground("GraphQL playground", "/query")))
 	router.POST("/query", gin.WrapF(handler.GraphQL(
@@ -34,17 +44,15 @@ func StartGraphQLServer() {
 	// ==============================================[Socket]
 	router.GET("/socket", gin.WrapF(Socket.LinkSocket))
 	// ==============================================[Test]
-
 	router.GET("/loaderio-434253d2ac58483eba54001e1f0f0d69.txt", CertificationFunction)
-
-	// ==============================================
-	log.Fatal(
+	// ==============================================[pprof]
+	// ==============================================[RunTLS]
+	Base.Error.Panicln(
 		router.RunTLS(
 			":"+Config.GraphQLDefaultPort,
 			"./SSL/server.crt",
 			"./SSL/server.key",
-		),
-	)
+		))
 	// ==============================================
 }
 

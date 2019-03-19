@@ -3,7 +3,6 @@ package MongoDB
 import (
 	"SORA/Base"
 	"encoding/hex"
-	"fmt"
 	"strconv"
 	"time"
 
@@ -180,14 +179,14 @@ func GetUTCTime() string {
 	t := time.Now()
 	local_location, err := time.LoadLocation("UTC")
 	if err != nil {
-		fmt.Println(err)
+		Base.Error.Panicln(err)
 	}
 	time_UTC := t.In(local_location)
 	return time_UTC.String()
 }
 
-func ERRs(logs error) {
-	if logs != nil {
-		fmt.Println(logs)
+func ERRs(err error) {
+	if err != nil {
+		Base.Error.Panicln(err)
 	}
 }
