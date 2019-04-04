@@ -63,6 +63,9 @@ func NumberSocket(w http.ResponseWriter, r *http.Request) {
 	} else if getID[0] == "__all__" {
 		allmap := map[string]int{}
 		for key, val := range LinkTable {
+			if len(val) == 0 {
+				continue
+			}
 			allmap[key] = len(val)
 		}
 		json.NewEncoder(w).Encode(allmap)
@@ -144,6 +147,7 @@ func (core *Message) RequestMessage() {
 			}
 		case <-tick.C:
 			if len(LinkTable[core.name]) == 0 {
+				LinkTable[core.name] = nil
 				return
 			}
 		}

@@ -2,58 +2,53 @@ package MongoDB
 
 import (
 	"SORA/Base"
-	"SORA/Config"
 
-	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
 // ============================================[CreateAccount]
 
 func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccountUser) *Base.CreateReturn {
+	result := bson.M{}
 	// ====================================[DBLink]
-	Session, err := mgo.Dial(Config.DatabaseURL)
-	defer Session.Close()
-	Database := Session.DB(Config.DatabaseName)
-	Collection := Database.C("Register")
+	Collection := Base.DBCol.C("Register")
 	// -------------------------------------
 	User := UserConvert(AccountData, AccountIDPW.Account)
 	// -------------------------------------
-	Collection = Database.C("User")
-	err = Collection.Insert(User)
-	ERRs(err)
+	Collection = Base.DBCol.C("User")
+	if err := Collection.Insert(User); err != nil {
+		Base.Error.Println(err)
+		return &Base.CreateReturn{Status: Base.SelfErrors(-1)}
+	} else if err = Collection.Find(bson.M{"Email": AccountIDPW.Account}).One(&result); err != nil {
+		Base.Error.Println(err)
+		return &Base.CreateReturn{Status: Base.SelfErrors(-1)}
+	}
 	// -------------------------------------
-	result := bson.M{}
-	err = Collection.Find(bson.M{"Email": AccountIDPW.Account}).One(&result)
-	ERRs(err)
 	Oid, _ := result["_id"].(bson.ObjectId)
-	// -------------------------------------
 	Register := ConvertRegisters(AccountIDPW, Oid)
-	Collection = Database.C("Register")
-	err = Collection.Insert(Register)
-	ERRs(err)
+	Collection = Base.DBCol.C("Register")
 	// -------------------------------------
-	return &Base.CreateReturn{Status: Base.SelfSuccess(1), ID: AccountIDPW.Account}
+	if err := Collection.Insert(Register); err != nil {
+		Base.Error.Println(err)
+		return &Base.CreateReturn{Status: Base.SelfErrors(-1)}
+	} else {
+		return &Base.CreateReturn{Status: Base.SelfSuccess(1), ID: AccountIDPW.Account}
+	}
+	// -------------------------------------
 }
 
 // ============================================[LogIn]
 
 func DBLogIn(Account string, Password string) *Base.LogInToken {
-	Session, err := mgo.Dial(Config.DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(Config.DatabaseName)
-	Collection := Database.C("Register")
 	result := bson.M{}
+	Collection := Base.DBCol.C("Register")
 	// -------------------------------------
-	err = Collection.Find(bson.M{"Accountid": Account, "Password": GetSHAString(Password)}).One(&result)
-	// -------------------------------------
-	if err != nil {
+	if err := Collection.Find(bson.M{"Accountid": Account, "Password": GetSHAString(Password)}).One(&result); err != nil {
 		return &Base.LogInToken{Status: Base.SelfErrors(4)}
 	} else {
 		ReturnData := ConverLogInToken(Account, 1)
 		// -------------------------------------
-		Collection := Database.C("User")
+		Collection := Base.DBCol.C("User")
 		// ========================================
 		selects := bson.M{"Email": Account}
 		data := bson.M{"$addToSet": bson.M{
@@ -64,8 +59,7 @@ func DBLogIn(Account string, Password string) *Base.LogInToken {
 				"Device":   "Null",
 			}}}
 		// ========================================
-		err = Collection.Update(selects, data)
-		if err != nil {
+		if err := Collection.Update(selects, data); err != nil {
 			return &Base.LogInToken{Status: Base.SelfErrors(4)}
 		} else {
 			return &ReturnData
@@ -83,11 +77,7 @@ func DBLogOut(Account string, Token string) *Base.StatusData {
 		return &returnData
 	}
 	// ========================================
-	Session, err := mgo.Dial(Config.DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(Config.DatabaseName)
-	Collection := Database.C("User")
+	Collection := Base.DBCol.C("User")
 	// ========================================
 	selects := bson.M{"Email": Account}
 	data := bson.M{"$addToSet": bson.M{
@@ -98,8 +88,7 @@ func DBLogOut(Account string, Token string) *Base.StatusData {
 			"Device":   "Null",
 		}}}
 	// ========================================
-	err = Collection.Update(selects, data)
-	if err != nil {
+	if err := Collection.Update(selects, data); err != nil {
 		returnData := Base.SelfErrors(0)
 		return &returnData
 	} else {
@@ -112,16 +101,17 @@ func DBLogOut(Account string, Token string) *Base.StatusData {
 // ============================================[AccountHas]
 
 func DBAccountHas(ID string) bool {
-	Session, err := mgo.Dial(Config.DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(Config.DatabaseName)
-	Collection := Database.C("Register")
 	result := bson.M{}
-	err = Collection.Find(bson.M{"Accountid": ID}).One(&result)
-	if err == nil {
+	Collection := Base.DBCol.C("Register")
+	if err := Collection.Find(bson.M{"Accountid": ID}).One(&result); err == nil {
 		return true
 	} else {
 		return false
 	}
 }
+
+// ============================================[CarIDHas]
+
+// func CarAccountHas() bool {
+
+// }
