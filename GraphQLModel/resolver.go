@@ -46,14 +46,14 @@ func (r *mutationResolver) AddSecurity(ctx context.Context, inputSecurityData Ba
 
 type queryResolver struct{ *Resolver }
 
-func (r *queryResolver) GetUser(ctx context.Context, certification Base.InputCertification) (*Base.Users, error) {
-	return Controller.ExaminationGetUser(certification)
+func (r *queryResolver) GetUser(ctx context.Context, certification Base.InputCertification, GetHistorysNumber int) (*Base.Users, error) {
+	return Controller.ExaminationGetUser(certification, GetHistorysNumber)
 }
-func (r *queryResolver) LogIn(ctx context.Context, id string, password string) (*Base.LogInToken, error) {
-	return Controller.ExaminationLogIn(id, password)
+func (r *queryResolver) LogIn(ctx context.Context, id string, password string, information Base.Logformation) (*Base.LogInToken, error) {
+	return Controller.ExaminationLogIn(id, password, information)
 }
-func (r *queryResolver) LogOut(ctx context.Context, certification Base.InputCertification) (*Base.StatusData, error) {
-	return Controller.ExaminationLogOut(certification)
+func (r *queryResolver) LogOut(ctx context.Context, certification Base.InputCertification, information Base.Logformation) (*Base.StatusData, error) {
+	return Controller.ExaminationLogOut(certification, information)
 }
 func (r *queryResolver) CheckAccountHas(ctx context.Context, id string) (*Base.AccountHas, error) {
 	return Controller.ExaminationCheckAccountHas(id)

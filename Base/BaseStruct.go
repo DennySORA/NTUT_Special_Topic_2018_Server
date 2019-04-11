@@ -64,6 +64,10 @@ type LogInToken struct {
 	AccountID    string     `json:"AccountID"`
 }
 
+type Logformation struct {
+	Platform Platforms `json:"Platform"`
+}
+
 type MonitorData struct {
 	Status         StatusData        `json:"Status"`
 	WaterStatus    MonitorStatusData `json:"WaterStatus"`
@@ -111,6 +115,11 @@ type PermitLogs struct {
 type Phones struct {
 	Country string `json:"Country"`
 	Number  string `json:"Number"`
+}
+
+type Platforms struct {
+	Type   string `json:"Type"`
+	Device string `json:"Device"`
 }
 
 type Profiles struct {

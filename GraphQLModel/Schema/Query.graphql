@@ -1,9 +1,12 @@
 type Query {
   # ============================================[User]
-  GetUser(Certification: InputCertification!): Users!
+  GetUser(Certification: InputCertification!, GetHistorysNumber: Int!): Users!
   # ============================================[Account]
-  LogIn(ID: String!, Password: String!): LogInToken!
-  LogOut(Certification: InputCertification!): StatusData!
+  LogIn(ID: String!, Password: String!, Information: Logformation!): LogInToken!
+  LogOut(
+    Certification: InputCertification!
+    Information: Logformation!
+  ): StatusData!
   CheckAccountHas(ID: String!): AccountHas!
   # ============================================[CarID]
   GetCarID(Certification: InputCertification!): [CarData!]

@@ -20,20 +20,20 @@ func ExaminationCreateAccount(AccountIDPW Base.NewAccountIDPw, User Base.NewAcco
 
 // ============================================[LogIn]
 
-func ExaminationLogIn(Account string, Password string) (*Base.LogInToken, error) {
+func ExaminationLogIn(Account string, Password string, Information Base.Logformation) (*Base.LogInToken, error) {
 	Ok, number := RoutineInspection(Account, Password)
 	if Ok == false {
 		return &Base.LogInToken{Status: Base.SelfErrors(number)}, nil
 	} else if MongoDB.DBAccountHas(Account) == false {
 		return &Base.LogInToken{Status: Base.SelfErrors(5)}, nil
 	} else {
-		return MongoDB.DBLogIn(Account, Password), nil
+		return MongoDB.DBLogIn(Account, Password, Information), nil
 	}
 }
 
 // ============================================[LogOut]
 
-func ExaminationLogOut(Certification Base.InputCertification) (*Base.StatusData, error) {
+func ExaminationLogOut(Certification Base.InputCertification, Information Base.Logformation) (*Base.StatusData, error) {
 	Ok, number := RoutineInspection(Certification.Account, Certification.Token)
 	if Ok == false {
 		returnData := Base.SelfErrors(number)
@@ -42,7 +42,7 @@ func ExaminationLogOut(Certification Base.InputCertification) (*Base.StatusData,
 		returnData := Base.SelfErrors(5)
 		return &returnData, nil
 	} else {
-		return MongoDB.DBLogOut(Certification.Account, Certification.Token), nil
+		return MongoDB.DBLogOut(Certification.Account, Certification.Token, Information), nil
 	}
 }
 

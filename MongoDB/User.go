@@ -7,13 +7,13 @@ import (
 )
 
 // ============================================[GetUser]
-func DBGetUser(Account string, Token string) (Base.Users, int) {
+func DBGetUser(Account string, Token string, GetHistorysNumber int) (Base.Users, int) {
 	Collection := Base.DBCol.C("User")
 	result := bson.M{}
 	if err := Collection.Find(bson.M{"Email": Account}).One(&result); err != nil {
 		return Base.Users{}, 8
 	} else {
-		return ReturnUserConvert(result), 0
+		return ReturnUserConvert(result, GetHistorysNumber), 0
 	}
 }
 

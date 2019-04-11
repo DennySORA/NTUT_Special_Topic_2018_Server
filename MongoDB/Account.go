@@ -39,7 +39,7 @@ func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccoun
 
 // ============================================[LogIn]
 
-func DBLogIn(Account string, Password string) *Base.LogInToken {
+func DBLogIn(Account string, Password string, Information Base.Logformation) *Base.LogInToken {
 	result := bson.M{}
 	Collection := Base.DBCol.C("Register")
 	// -------------------------------------
@@ -55,8 +55,8 @@ func DBLogIn(Account string, Password string) *Base.LogInToken {
 			"SiginHistory": bson.M{
 				"Times":    GetUTCTime(),
 				"UseToken": ReturnData.AccountToken,
-				"Types":    "Null",
-				"Device":   "Null",
+				"Types":    Information.Platform.Type,
+				"Device":   Information.Platform.Device,
 			}}}
 		// ========================================
 		if err := Collection.Update(selects, data); err != nil {
@@ -70,7 +70,7 @@ func DBLogIn(Account string, Password string) *Base.LogInToken {
 
 // ============================================[LogOut]
 
-func DBLogOut(Account string, Token string) *Base.StatusData {
+func DBLogOut(Account string, Token string, Information Base.Logformation) *Base.StatusData {
 	Invalid := TokenInvalid(Account, Token, 1)
 	if Invalid == false {
 		returnData := Base.SelfErrors(8)
@@ -84,8 +84,8 @@ func DBLogOut(Account string, Token string) *Base.StatusData {
 		"LogoutHistory": bson.M{
 			"Times":    GetUTCTime(),
 			"UseToken": Token,
-			"Types":    "Null",
-			"Device":   "Null",
+			"Types":    Information.Platform.Type,
+			"Device":   Information.Platform.Device,
 		}}}
 	// ========================================
 	if err := Collection.Update(selects, data); err != nil {
@@ -109,9 +109,3 @@ func DBAccountHas(ID string) bool {
 		return false
 	}
 }
-
-// ============================================[CarIDHas]
-
-// func CarAccountHas() bool {
-
-// }

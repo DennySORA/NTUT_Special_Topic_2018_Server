@@ -7,7 +7,7 @@ import (
 
 // ============================================[GetUser]
 
-func ExaminationGetUser(Certification Base.InputCertification) (*Base.Users, error) {
+func ExaminationGetUser(Certification Base.InputCertification, GetHistorysNumber int) (*Base.Users, error) {
 	Ok, number := RoutineInspection(Certification.Account, Certification.Token)
 	if Ok == false {
 		return &Base.Users{Status: Base.SelfErrors(number)}, nil
@@ -16,7 +16,7 @@ func ExaminationGetUser(Certification Base.InputCertification) (*Base.Users, err
 	} else if MongoDB.TokenCheck(Certification.Account, Certification.Token, 1) == false {
 		return &Base.Users{Status: Base.SelfErrors(6)}, nil
 	}
-	Data, Status := MongoDB.DBGetUser(Certification.Account, Certification.Token)
+	Data, Status := MongoDB.DBGetUser(Certification.Account, Certification.Token, GetHistorysNumber)
 	if Status != 0 {
 		return &Base.Users{Status: Base.SelfErrors(Status)}, nil
 	} else {
