@@ -14,13 +14,13 @@ func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccoun
 	// ====================================[DBLink]
 	Collection := Base.DBCol.C("Register")
 	// -------------------------------------
-	User := UserConvert(AccountData, AccountIDPW.Account)
+	User := UserConvert(AccountData, AccountIDPW.AccountID)
 	// -------------------------------------
 	Collection = Base.DBCol.C("User")
 	if err := Collection.Insert(User); err != nil {
 		Base.Error.Println(err)
 		return &Base.CreateReturn{Status: Base.SelfErrors(-1)}
-	} else if err = Collection.Find(bson.M{"Email": AccountIDPW.Account}).One(&result); err != nil {
+	} else if err = Collection.Find(bson.M{"Email": AccountIDPW.AccountID}).One(&result); err != nil {
 		Base.Error.Println(err)
 		return &Base.CreateReturn{Status: Base.SelfErrors(-1)}
 	}
@@ -33,7 +33,7 @@ func DBCreateAccount(AccountIDPW Base.NewAccountIDPw, AccountData Base.NewAccoun
 		Base.Error.Println(err)
 		return &Base.CreateReturn{Status: Base.SelfErrors(-1)}
 	} else {
-		return &Base.CreateReturn{Status: Base.SelfSuccess(1), ID: AccountIDPW.Account}
+		return &Base.CreateReturn{Status: Base.SelfSuccess(1), AccountID: AccountIDPW.AccountID}
 	}
 	// -------------------------------------
 }
@@ -59,8 +59,8 @@ func DBLogIn(Account string, Password string, Information Base.Logformation) *Ba
 			"SiginHistory": bson.M{
 				"Times":    GetUTCTime(),
 				"UseToken": ReturnData.AccountToken,
-				"Types":    Information.Platform.Type,
-				"Device":   Information.Platform.Device,
+				"Types":    Information.Type,
+				"Device":   Information.Device,
 			}}}
 		// ========================================
 		if err := Collection.Update(selects, data); err != nil {
@@ -88,8 +88,8 @@ func DBLogOut(Account string, Token string, Information Base.Logformation) *Base
 		"LogoutHistory": bson.M{
 			"Times":    GetUTCTime(),
 			"UseToken": Token,
-			"Types":    Information.Platform.Type,
-			"Device":   Information.Platform.Device,
+			"Types":    Information.Type,
+			"Device":   Information.Device,
 		}}}
 	// ========================================
 	if err := Collection.Update(selects, data); err != nil {

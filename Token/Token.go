@@ -69,7 +69,6 @@ func (t *TokenSet) GetToken(account string, types string, setInvalidTime int64) 
 		Token = fmt.Sprintf("%06d", rand.Intn(999999))
 	}
 	tokenBox[Token] = InsertToken
-	fmt.Println(tokenBox)
 	t.CalculationTokenNumber(types, account, 1)
 	return Token, true
 }
@@ -85,6 +84,21 @@ func (t *TokenSet) EqualToekn(token string, types string) bool {
 		return false
 	} else {
 		return true
+	}
+}
+
+func (t *TokenSet) EqualToeknGetAccount(token string, types string) (string, bool) {
+	tokenBox := t.SwitchToken(types)
+	information, ok := tokenBox[token]
+	fmt.Println(tokenBox)
+	// --------------------------------------------------------
+	if ok == false {
+		return "", false
+	} else if information.InvalidTime != -1 && information.GetTime+information.InvalidTime < time.Now().Unix() {
+		t.RemoveToken(token, types)
+		return "", false
+	} else {
+		return information.Account, true
 	}
 }
 func (t *TokenSet) RemoveToken(token string, types string) bool {

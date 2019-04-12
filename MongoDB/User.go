@@ -7,7 +7,7 @@ import (
 )
 
 // ============================================[GetUser]
-func DBGetUser(Account string, Token string, GetHistorysNumber int) (Base.Users, int) {
+func DBGetUser(Account string, GetHistorysNumber int) (Base.Users, int) {
 	Collection := Base.DBCol.C("User")
 	result := bson.M{}
 	if err := Collection.Find(bson.M{"Email": Account}).One(&result); err != nil {
@@ -19,7 +19,7 @@ func DBGetUser(Account string, Token string, GetHistorysNumber int) (Base.Users,
 
 // ============================================[GetUser]
 
-func DBGetCarID(Account string, Token string) ([]Base.CarData, int) {
+func DBGetCarID(Account string) ([]Base.CarData, int) {
 	result := bson.M{}
 	Collection := Base.DBCol.C("User")
 	if err := Collection.Find(bson.M{"Email": Account}).Select(bson.M{"_id": 0, "Car": 1}).One(&result); err != nil {
@@ -38,6 +38,6 @@ func DBUpdateUser(Account string, AccountData Base.NewAccountUser) *Base.CreateR
 	if err := Collection.Update(bson.M{"Email": Account}, User); err != nil {
 		return &Base.CreateReturn{Status: Base.SelfErrors(0)}
 	} else {
-		return &Base.CreateReturn{Status: Base.SelfSuccess(8), ID: Account}
+		return &Base.CreateReturn{Status: Base.SelfSuccess(8), AccountID: Account}
 	}
 }

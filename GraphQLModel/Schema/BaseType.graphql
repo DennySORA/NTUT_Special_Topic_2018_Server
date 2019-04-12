@@ -13,8 +13,8 @@ type Profiles {
   Phone: Phones!
 }
 type Phones {
-  Country: String!
-  Number: String!
+  CountryNumber: String!
+  PhoneNumber: String!
 }
 type Accesses {
   Certification: Boolean!
@@ -93,40 +93,36 @@ type TemporarilyTokenData {
 # ===========================================================[Mutation]
 # ============================================[Account][User]
 input NewAccountIDPW {
-  Account: String!
+  AccountID: String!
   Password: String!
 }
 input NewAccountUser {
   Name: String!
   Gender: Int!
-  Country: String!
-  Number: String!
+  CountryNumber: String!
+  PhoneNumber: String!
 }
 # ============================================[CarID]
 input NewCarName {
-  ID: String!
+  AccountID: String!
   CarID: String!
   CarName: String!
 }
 type CarIDReturn {
   Status: StatusData!
-  Account: String!
+  AccountID: String!
   CarToken: String!
 }
 # ============================================[Status]
 # ------------------------------------[Monitor]
 input MonitorStatus {
-  ID: String!
-  Token: String!
-  CarID: String!
+  CarToken: String!
   SelectObject: String!
   StatusCode: Int!
 }
 # -----------------------------------[Security]
 input SecurityStatus {
-  ID: String!
-  Token: String!
-  CarID: String!
+  CarToken: String!
   Name: String!
   SelectObject: String!
   StatusCode: Int!

@@ -22,8 +22,8 @@ func UserConvert(User Base.NewAccountUser, ID string) bson.M {
 			"Name":   User.Name,
 			"Gender": User.Gender,
 			"Phone": bson.M{
-				"Country": User.Country,
-				"Number":  User.Number,
+				"Country": User.CountryNumber,
+				"Number":  User.PhoneNumber,
 			},
 		},
 		"Accesse": bson.M{
@@ -49,7 +49,7 @@ func ConvertRegisters(AccountIDPW Base.NewAccountIDPw, Oid bson.ObjectId) bson.M
 		"_id":         Oid,
 		"Createtime":  TempTime,
 		"Refreshtime": TempTime,
-		"Accountid":   AccountIDPW.Account,
+		"Accountid":   AccountIDPW.AccountID,
 		"Password":    GetSHAString(AccountIDPW.Password),
 		"IsVerify":    false,
 	}
@@ -76,8 +76,8 @@ func ReturnUserConvert(UserData bson.M, GetHistorysNumber int) Base.Users {
 			Name:   UserData["Profile"].(bson.M)["Name"].(string),
 			Gender: UserData["Profile"].(bson.M)["Gender"].(int),
 			Phone: Base.Phones{
-				Country: UserData["Profile"].(bson.M)["Phone"].(bson.M)["Country"].(string),
-				Number:  UserData["Profile"].(bson.M)["Phone"].(bson.M)["Number"].(string),
+				CountryNumber: UserData["Profile"].(bson.M)["Phone"].(bson.M)["Country"].(string),
+				PhoneNumber:   UserData["Profile"].(bson.M)["Phone"].(bson.M)["Number"].(string),
 			},
 		},
 		Accesse: Base.Accesses{

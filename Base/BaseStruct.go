@@ -14,10 +14,6 @@ type AccountHas struct {
 	Has    bool       `json:"Has"`
 }
 
-type AccountPw struct {
-	Password string `json:"Password"`
-}
-
 type CarData struct {
 	Status      StatusData `json:"Status"`
 	CarID       string     `json:"CarID"`
@@ -27,22 +23,14 @@ type CarData struct {
 }
 
 type CarIDReturn struct {
-	Status StatusData `json:"Status"`
-	ID     string     `json:"ID"`
-	CarID  string     `json:"CarID"`
-	Token  string     `json:"Token"`
-}
-
-type CarNews struct {
-	ID               string `json:"ID"`
-	CarID            string `json:"CarID"`
-	CarName          string `json:"CarName"`
-	TemporarilyToken string `json:"TemporarilyToken"`
+	Status    StatusData `json:"Status"`
+	AccountID string     `json:"AccountID"`
+	CarToken  string     `json:"CarToken"`
 }
 
 type CreateReturn struct {
-	Status StatusData `json:"Status"`
-	ID     string     `json:"ID"`
+	Status    StatusData `json:"Status"`
+	AccountID string     `json:"AccountID"`
 }
 
 type Historys struct {
@@ -50,11 +38,6 @@ type Historys struct {
 	UseToken string `json:"UseToken"`
 	Types    int    `json:"Types"`
 	Device   string `json:"Device"`
-}
-
-type InputCertification struct {
-	Token   string `json:"Token"`
-	Account string `json:"Account"`
 }
 
 type LogInToken struct {
@@ -65,7 +48,8 @@ type LogInToken struct {
 }
 
 type Logformation struct {
-	Platform Platforms `json:"Platform"`
+	Type   string `json:"Type"`
+	Device string `json:"Device"`
 }
 
 type MonitorData struct {
@@ -76,9 +60,7 @@ type MonitorData struct {
 }
 
 type MonitorStatus struct {
-	ID           string `json:"ID"`
-	Token        string `json:"Token"`
-	CarID        string `json:"CarID"`
+	CarToken     string `json:"CarToken"`
 	SelectObject string `json:"SelectObject"`
 	StatusCode   int    `json:"StatusCode"`
 }
@@ -89,21 +71,21 @@ type MonitorStatusData struct {
 }
 
 type NewAccountIDPw struct {
-	Account  string `json:"Account"`
-	Password string `json:"Password"`
+	AccountID string `json:"AccountID"`
+	Password  string `json:"Password"`
 }
 
 type NewAccountUser struct {
-	Name    string `json:"Name"`
-	Gender  int    `json:"Gender"`
-	Country string `json:"Country"`
-	Number  string `json:"Number"`
+	Name          string `json:"Name"`
+	Gender        int    `json:"Gender"`
+	CountryNumber string `json:"CountryNumber"`
+	PhoneNumber   string `json:"PhoneNumber"`
 }
 
 type NewCarName struct {
-	ID      string `json:"ID"`
-	CarID   string `json:"CarID"`
-	CarName string `json:"CarName"`
+	AccountID string `json:"AccountID"`
+	CarID     string `json:"CarID"`
+	CarName   string `json:"CarName"`
 }
 
 type PermitLogs struct {
@@ -113,13 +95,8 @@ type PermitLogs struct {
 }
 
 type Phones struct {
-	Country string `json:"Country"`
-	Number  string `json:"Number"`
-}
-
-type Platforms struct {
-	Type   string `json:"Type"`
-	Device string `json:"Device"`
+	CountryNumber string `json:"CountryNumber"`
+	PhoneNumber   string `json:"PhoneNumber"`
 }
 
 type Profiles struct {
@@ -136,9 +113,7 @@ type SecurityData struct {
 }
 
 type SecurityStatus struct {
-	ID           string `json:"ID"`
-	Token        string `json:"Token"`
-	CarID        string `json:"CarID"`
+	CarToken     string `json:"CarToken"`
 	Name         string `json:"Name"`
 	SelectObject string `json:"SelectObject"`
 	StatusCode   int    `json:"StatusCode"`

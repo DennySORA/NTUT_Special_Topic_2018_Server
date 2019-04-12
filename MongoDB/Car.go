@@ -8,7 +8,7 @@ import (
 )
 
 // ============================================[AddCarID]
-func DBAddCarID(Account string, CarID string, CarName string) (string, int) {
+func DBAddCarID(Account string, CarName string) (string, int) {
 	Token, ok := TokenBox.Token.GetToken(Account, "Car", 0)
 	Collection := Base.DBCol.C("User")
 	// ========================================

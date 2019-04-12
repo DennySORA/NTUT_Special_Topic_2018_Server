@@ -19,19 +19,19 @@ func (r *Resolver) Query() QueryResolver {
 
 type mutationResolver struct{ *Resolver }
 
-func (r *mutationResolver) UpdateUser(ctx context.Context, certification Base.InputCertification, user Base.NewAccountUser) (*Base.CreateReturn, error) {
-	return Controller.ExaminationUpdateUser(certification, user)
+func (r *mutationResolver) UpdateUser(ctx context.Context, token string, user Base.NewAccountUser) (*Base.CreateReturn, error) {
+	return Controller.ExaminationUpdateUser(token, user)
 }
 func (r *mutationResolver) CreateAccount(ctx context.Context, accountIDPw Base.NewAccountIDPw, user Base.NewAccountUser) (*Base.CreateReturn, error) {
 	return Controller.ExaminationCreateAccount(accountIDPw, user)
 }
-func (r *mutationResolver) ChangePassword(ctx context.Context, certification Base.InputCertification, oldPw Base.AccountPw, newPw Base.AccountPw, confirmationPw Base.AccountPw) (*Base.CreateReturn, error) {
+func (r *mutationResolver) ChangePassword(ctx context.Context, token string, oldPw string, newPw string) (*Base.CreateReturn, error) {
 	panic("not implemented")
 }
-func (r *mutationResolver) AddCarID(ctx context.Context, inputCarNews Base.CarNews) (*Base.CarIDReturn, error) {
-	return Controller.ExaminationAddCarID(inputCarNews)
+func (r *mutationResolver) AddCarID(ctx context.Context, accountID string, carName string, temporarilyToken string) (*Base.CarIDReturn, error) {
+	return Controller.ExaminationAddCarID(accountID, carName, temporarilyToken)
 }
-func (r *mutationResolver) UpdateCarName(ctx context.Context, certification Base.InputCertification, carNameData Base.NewCarName) (*Base.CreateReturn, error) {
+func (r *mutationResolver) UpdateCarName(ctx context.Context, newCarName string, carToken string) (*Base.CreateReturn, error) {
 	panic("not implemented")
 }
 func (r *mutationResolver) UpdateMonitor(ctx context.Context, inputMonitorData Base.SecurityStatus) (*Base.CreateReturn, error) {
@@ -46,30 +46,30 @@ func (r *mutationResolver) AddSecurity(ctx context.Context, inputSecurityData Ba
 
 type queryResolver struct{ *Resolver }
 
-func (r *queryResolver) GetUser(ctx context.Context, certification Base.InputCertification, GetHistorysNumber int) (*Base.Users, error) {
-	return Controller.ExaminationGetUser(certification, GetHistorysNumber)
+func (r *queryResolver) GetUser(ctx context.Context, token string, getHistorysNumber int) (*Base.Users, error) {
+	return Controller.ExaminationGetUser(token, getHistorysNumber)
 }
-func (r *queryResolver) LogIn(ctx context.Context, id string, password string, information Base.Logformation) (*Base.LogInToken, error) {
-	return Controller.ExaminationLogIn(id, password, information)
+func (r *queryResolver) LogIn(ctx context.Context, accountID string, password string, information Base.Logformation) (*Base.LogInToken, error) {
+	return Controller.ExaminationLogIn(accountID, password, information)
 }
-func (r *queryResolver) LogOut(ctx context.Context, certification Base.InputCertification, information Base.Logformation) (*Base.StatusData, error) {
-	return Controller.ExaminationLogOut(certification, information)
+func (r *queryResolver) LogOut(ctx context.Context, token string, information Base.Logformation) (*Base.StatusData, error) {
+	return Controller.ExaminationLogOut(token, information)
 }
-func (r *queryResolver) CheckAccountHas(ctx context.Context, id string) (*Base.AccountHas, error) {
-	return Controller.ExaminationCheckAccountHas(id)
+func (r *queryResolver) CheckAccountHas(ctx context.Context, accountID string) (*Base.AccountHas, error) {
+	return Controller.ExaminationCheckAccountHas(accountID)
 }
-func (r *queryResolver) GetCarID(ctx context.Context, certification Base.InputCertification) ([]Base.CarData, error) {
-	return Controller.ExaminationGetCarID(certification)
+func (r *queryResolver) GetCarID(ctx context.Context, token string) ([]Base.CarData, error) {
+	return Controller.ExaminationGetCarID(token)
 }
-func (r *queryResolver) DeleteCarID(ctx context.Context, certification Base.InputCertification, carID string) (*Base.StatusData, error) {
+func (r *queryResolver) DeleteCarID(ctx context.Context, token string, carToken string) (*Base.StatusData, error) {
 	panic("not implemented")
 }
-func (r *queryResolver) GetMonitorStatus(ctx context.Context, certification Base.InputCertification, selectObject string) (*Base.MonitorData, error) {
+func (r *queryResolver) GetMonitorStatus(ctx context.Context, token string, selectObject string) (*Base.MonitorData, error) {
 	panic("not implemented")
 }
-func (r *queryResolver) GetSecurityStatus(ctx context.Context, certification Base.InputCertification, selectObject string) (*Base.SecurityData, error) {
+func (r *queryResolver) GetSecurityStatus(ctx context.Context, token string, selectObject string) (*Base.SecurityData, error) {
 	panic("not implemented")
 }
-func (r *queryResolver) GetTemporarilyToken(ctx context.Context, certification Base.InputCertification) (*Base.TemporarilyTokenData, error) {
-	return Controller.ExaminationGetTemporarilyToken(certification)
+func (r *queryResolver) GetTemporarilyToken(ctx context.Context, token string) (*Base.TemporarilyTokenData, error) {
+	return Controller.ExaminationGetTemporarilyToken(token)
 }
