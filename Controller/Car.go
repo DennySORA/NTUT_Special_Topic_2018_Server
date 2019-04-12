@@ -2,6 +2,7 @@ package Controller
 
 import (
 	"SORA/Base"
+	"SORA/Config"
 	"SORA/MongoDB"
 	TokenBox "SORA/Token"
 	"strings"
@@ -31,7 +32,7 @@ func ExaminationGetTemporarilyToken(token string) (*Base.TemporarilyTokenData, e
 		return &Base.TemporarilyTokenData{Status: Base.SelfErrors(1)}, nil
 	} else if accountID, ok := TokenBox.Token.EqualToeknGetAccount(token, "Account"); !ok {
 		return &Base.TemporarilyTokenData{Status: Base.SelfErrors(6)}, nil
-	} else if tokens, ok := TokenBox.Token.GetToken(accountID, "Certification", 30); !ok {
+	} else if tokens, ok := TokenBox.Token.GetToken(accountID, "Certification", Config.TokenTime); !ok {
 		return &Base.TemporarilyTokenData{Status: Base.SelfErrors(9)}, nil
 	} else {
 		return &Base.TemporarilyTokenData{
