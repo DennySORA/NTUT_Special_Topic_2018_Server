@@ -13,6 +13,9 @@ func Start() {
 	stopArg := []interface{}{}
 	cherr := make(chan error)
 	Base.LogInit(cherr)
+	if err := Base.InitMongoDB(); err != nil {
+		Base.Error.Panicln(err)
+	}
 	stopArg = append(stopArg, Base.TraceInit(cherr))
 	go Server.StartGraphQLServer()
 	stop := make(chan os.Signal, 1)

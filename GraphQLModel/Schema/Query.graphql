@@ -1,25 +1,28 @@
 type Query {
   # ============================================[User]
-  GetUser(Certification: InputCertification!): Users!
+  GetUser(Token: String!, GetHistorysNumber: Int!): Users!
   # ============================================[Account]
-  LogIn(ID: String!, Password: String!): LogInToken!
-  LogOut(Certification: InputCertification!): StatusData!
-  CheckAccountHas(ID: String!): AccountHas!
+  LogIn(AccountID: String!, Password: String!, Information: Logformation!): LogInToken!
+  LogOut(
+    Token: String!
+    Information: Logformation!
+  ): StatusData!
+  CheckAccountHas(AccountID: String!): AccountHas!
   # ============================================[CarID]
-  GetCarID(Certification: InputCertification!): [CarData!]
-  DeleteCarID(Certification: InputCertification!, CarID: String!): StatusData!
+  GetCarID(Token: String!): [CarData!]
+  DeleteCarID(Token: String!, CarToken: String!): StatusData!
   # ============================================[Status]
   # ------------------------------------[Monitor]
   GetMonitorStatus(
-    Certification: InputCertification!
+    Token: String!
     SelectObject: String!
   ): MonitorData!
   # -----------------------------------[Security]
   GetSecurityStatus(
-    Certification: InputCertification!
+    Token: String!
     SelectObject: String!
   ): SecurityData!
   # ============================================[Token]
-  GetTemporarilyToken(Certification: InputCertification!): TemporarilyTokenData!
+  GetTemporarilyToken(Token: String!): TemporarilyTokenData!
   # ============================================
 }

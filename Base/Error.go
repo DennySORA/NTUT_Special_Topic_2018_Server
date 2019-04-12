@@ -41,6 +41,11 @@ func SelfErrors(Number int) StatusData {
 			StatusCode:  -8,
 			Description: "Token remove error.",
 		}
+	} else if Number == 9 {
+		return StatusData{
+			StatusCode:  -9,
+			Description: "Token Limit.",
+		}
 	} else {
 		return StatusData{
 			StatusCode:  0,

@@ -2,6 +2,7 @@ package MongoDB
 
 import (
 	"SORA/Base"
+	TokenBox "SORA/Token"
 	"encoding/hex"
 	"strconv"
 	"time"
@@ -21,8 +22,8 @@ func UserConvert(User Base.NewAccountUser, ID string) bson.M {
 			"Name":   User.Name,
 			"Gender": User.Gender,
 			"Phone": bson.M{
-				"Country": User.Country,
-				"Number":  User.Number,
+				"Country": User.CountryNumber,
+				"Number":  User.PhoneNumber,
 			},
 		},
 		"Accesse": bson.M{
@@ -48,22 +49,26 @@ func ConvertRegisters(AccountIDPW Base.NewAccountIDPw, Oid bson.ObjectId) bson.M
 		"_id":         Oid,
 		"Createtime":  TempTime,
 		"Refreshtime": TempTime,
-		"Accountid":   AccountIDPW.Account,
+		"Accountid":   AccountIDPW.AccountID,
 		"Password":    GetSHAString(AccountIDPW.Password),
 		"IsVerify":    false,
 	}
 }
 
-func ConverLogInToken(Account string, level int) Base.LogInToken {
-	return Base.LogInToken{
-		Status:       Base.SelfSuccess(2),
-		GetTimes:     GetUTCTime(),
-		AccountToken: GetAccountToken(Account, strconv.Itoa(level), 1),
-		AccountID:    Account,
+func ConverLogInToken(Account string, level int) (Base.LogInToken, bool) {
+	if toekn, ok := TokenBox.Token.GetToken(Account, "Account", 0); !ok {
+		return Base.LogInToken{}, false
+	} else {
+		return Base.LogInToken{
+			Status:       Base.SelfSuccess(2),
+			GetTimes:     GetUTCTime(),
+			AccountToken: toekn,
+			AccountID:    Account,
+		}, true
 	}
 }
 
-func ReturnUserConvert(UserData bson.M) Base.Users {
+func ReturnUserConvert(UserData bson.M, GetHistorysNumber int) Base.Users {
 	return Base.Users{
 		Status: Base.SelfSuccess(5),
 		Car:    ForCarList(UserData["Car"].([]interface{})),
@@ -71,8 +76,8 @@ func ReturnUserConvert(UserData bson.M) Base.Users {
 			Name:   UserData["Profile"].(bson.M)["Name"].(string),
 			Gender: UserData["Profile"].(bson.M)["Gender"].(int),
 			Phone: Base.Phones{
-				Country: UserData["Profile"].(bson.M)["Phone"].(bson.M)["Country"].(string),
-				Number:  UserData["Profile"].(bson.M)["Phone"].(bson.M)["Number"].(string),
+				CountryNumber: UserData["Profile"].(bson.M)["Phone"].(bson.M)["Country"].(string),
+				PhoneNumber:   UserData["Profile"].(bson.M)["Phone"].(bson.M)["Number"].(string),
 			},
 		},
 		Accesse: Base.Accesses{
@@ -80,8 +85,8 @@ func ReturnUserConvert(UserData bson.M) Base.Users {
 			Level:      UserData["Accesse"].(bson.M)["Level"].(int),
 			PermitLog:  ForPermitLogList(UserData["Accesse"].(bson.M)["PermitLog"].([]interface{})),
 		},
-		SiginHistory:  ForSiginHistoryList(UserData["SiginHistory"].([]interface{})),
-		LogoutHistory: ForLogoutHistoryList(UserData["LogoutHistory"].([]interface{})),
+		SiginHistory:  ForHistoryList(UserData["SiginHistory"].([]interface{}), GetHistorysNumber),
+		LogoutHistory: ForHistoryList(UserData["LogoutHistory"].([]interface{}), GetHistorysNumber),
 	}
 }
 
@@ -95,27 +100,13 @@ func ReturnCarIDConvert(CarIDs bson.M) []Base.CarData {
 	return ReturnCarID
 }
 
-func ForSiginHistoryList(SiginHistory []interface{}) []Base.Historys {
+func ForHistoryList(History []interface{}, GetHistorysNumber int) []Base.Historys {
 	TempList := []Base.Historys{}
-	for _, v := range SiginHistory {
-		Temp, _ := strconv.Atoi(v.(bson.M)["Types"].(string))
-		TempList = append(TempList, Base.Historys{
-			UseToken: v.(bson.M)["UseToken"].(string),
-			Times:    v.(bson.M)["Times"].(string),
-			Types:    Temp,
-			Device:   v.(bson.M)["Device"].(string),
-		})
+	if len(History)-GetHistorysNumber < 0 {
+		GetHistorysNumber = len(History)
 	}
-	if len(TempList) == 0 {
-		return []Base.Historys{}
-	} else {
-		return TempList
-	}
-}
-
-func ForLogoutHistoryList(LogoutHistory []interface{}) []Base.Historys {
-	TempList := []Base.Historys{}
-	for _, v := range LogoutHistory {
+	TempHistory := History[len(History)-GetHistorysNumber : len(History)]
+	for _, v := range TempHistory {
 		Temp, _ := strconv.Atoi(v.(bson.M)["Types"].(string))
 		TempList = append(TempList, Base.Historys{
 			UseToken: v.(bson.M)["UseToken"].(string),

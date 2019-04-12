@@ -1,7 +1,7 @@
 type Mutation {
   # ============================================[User]
   UpdateUser(
-    Certification: InputCertification!
+    Token: String!
     User: NewAccountUser!
   ): CreateReturn!
   # ============================================[Account]
@@ -10,16 +10,19 @@ type Mutation {
     User: NewAccountUser!
   ): CreateReturn!
   ChangePassword(
-    Certification: InputCertification!
-    OldPW: AccountPW!
-    NewPW: AccountPW!
-    ConfirmationPW: AccountPW!
+    Token: String!
+    OldPW: String!
+    NewPW: String!
   ): CreateReturn!
   # ============================================[CarID]
-  AddCarID(InputCarNews: CarNews!): CarIDReturn!
+  AddCarID(
+    AccountID: String!
+    CarName: String!
+    TemporarilyToken: String!
+  ): CarIDReturn!
   UpdateCarName(
-    Certification: InputCertification!
-    CarNameData: NewCarName!
+    NewCarName:String!
+    CarToken:String!
   ): CreateReturn!
   # ============================================[Status]
   # ------------------------------------[Monitor]

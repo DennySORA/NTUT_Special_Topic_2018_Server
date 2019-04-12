@@ -16,15 +16,14 @@ import (
 
 func StartGraphQLServer() {
 	// ==============================================
-	CORS := cors.New(cors.Config{
-		AllowAllOrigins:  true,
-		AllowCredentials: true,
-		AllowWebSockets:  true,
-	})
 	// -----------------------------------------------[Set User]
 	router := gin.Default()
+	CORS := cors.DefaultConfig()
+	CORS.AllowAllOrigins = true
+	CORS.AllowCredentials = true
+	CORS.AllowWebSockets = true
+	router.Use(cors.New(CORS))
 	pprof.Register(router)
-	router.Use(CORS)
 	// -----------------------------------------------[Log]
 	logFile, err := os.Create("./log/restful_server.log")
 	if err != nil {
@@ -43,6 +42,7 @@ func StartGraphQLServer() {
 	)))
 	// ==============================================[Socket]
 	router.GET("/socket", gin.WrapF(Socket.LinkSocket))
+	router.GET("/socket/number", gin.WrapF(Socket.NumberSocket))
 	// ==============================================[Test]
 	router.GET("/loaderio-434253d2ac58483eba54001e1f0f0d69.txt", CertificationFunction)
 	// ==============================================[pprof]

@@ -2,39 +2,27 @@ package MongoDB
 
 import (
 	"SORA/Base"
-	"SORA/Config"
 
-	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
 // ============================================[GetUser]
-func DBGetUser(Account string, Token string) (Base.Users, int) {
-	Session, err := mgo.Dial(Config.DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(Config.DatabaseName)
-	Collection := Database.C("User")
+func DBGetUser(Account string, GetHistorysNumber int) (Base.Users, int) {
+	Collection := Base.DBCol.C("User")
 	result := bson.M{}
-	err = Collection.Find(bson.M{"Email": Account}).One(&result)
-	if err != nil {
+	if err := Collection.Find(bson.M{"Email": Account}).One(&result); err != nil {
 		return Base.Users{}, 8
 	} else {
-		return ReturnUserConvert(result), 0
+		return ReturnUserConvert(result, GetHistorysNumber), 0
 	}
 }
 
 // ============================================[GetUser]
 
-func DBGetCarID(Account string, Token string) ([]Base.CarData, int) {
-	Session, err := mgo.Dial(Config.DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(Config.DatabaseName)
-	Collection := Database.C("User")
+func DBGetCarID(Account string) ([]Base.CarData, int) {
 	result := bson.M{}
-	err = Collection.Find(bson.M{"Email": Account}).Select(bson.M{"_id": 0, "Car": 1}).One(&result)
-	if err != nil {
+	Collection := Base.DBCol.C("User")
+	if err := Collection.Find(bson.M{"Email": Account}).Select(bson.M{"_id": 0, "Car": 1}).One(&result); err != nil {
 		return []Base.CarData{}, 8
 	} else {
 		return ReturnCarIDConvert(result), 0
@@ -44,17 +32,12 @@ func DBGetCarID(Account string, Token string) ([]Base.CarData, int) {
 // ============================================[GetUser]
 
 func DBUpdateUser(Account string, AccountData Base.NewAccountUser) *Base.CreateReturn {
-	Session, err := mgo.Dial(Config.DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(Config.DatabaseName)
-	Collection := Database.C("User")
+	Collection := Base.DBCol.C("User")
 	User := UserConvert(AccountData, Account)["Profile"].(bson.M)
 	User = bson.M{"$set": bson.M{"Profile": User}}
-	err = Collection.Update(bson.M{"Email": Account}, User)
-	if err != nil {
+	if err := Collection.Update(bson.M{"Email": Account}, User); err != nil {
 		return &Base.CreateReturn{Status: Base.SelfErrors(0)}
 	} else {
-		return &Base.CreateReturn{Status: Base.SelfSuccess(8), ID: Account}
+		return &Base.CreateReturn{Status: Base.SelfSuccess(8), AccountID: Account}
 	}
 }

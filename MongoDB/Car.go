@@ -1,33 +1,29 @@
 package MongoDB
 
 import (
-	"SORA/Config"
+	"SORA/Base"
+	TokenBox "SORA/Token"
 
-	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
 // ============================================[AddCarID]
-func DBAddCarID(Account string, CarID string, CarName string) (string, int) {
-	Session, err := mgo.Dial(Config.DatabaseURL)
-	defer Session.Close()
-	ERRs(err)
-	Database := Session.DB(Config.DatabaseName)
-	Collection := Database.C("User")
+func DBAddCarID(Account string, CarName string) (string, int) {
+	Token, ok := TokenBox.Token.GetToken(Account, "Car", 0)
+	Collection := Base.DBCol.C("User")
 	// ========================================
 	selects := bson.M{"Email": Account}
 	data := bson.M{"$addToSet": bson.M{
 		"Car": bson.M{
-			"CarID":       CarID,
+			"CarID":       Token,
 			"CarName":     CarName,
 			"RefreshTime": GetUTCTime(),
 			"CreateTime":  GetUTCTime(),
 		}}}
 	// ========================================
-	err = Collection.Update(selects, data)
-	if err != nil {
+	if err := Collection.Update(selects, data); err != nil || !ok {
 		return "nil", 7
 	} else {
-		return GetAccountToken(Account, CarID, 3), 0
+		return Token, 0
 	}
 }
