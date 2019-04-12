@@ -46,6 +46,11 @@ func SelfErrors(Number int) StatusData {
 			StatusCode:  -9,
 			Description: "Token Limit.",
 		}
+	} else if Number == 10 {
+		return StatusData{
+			StatusCode:  -10,
+			Description: "Strong Password Not Good.",
+		}
 	} else {
 		return StatusData{
 			StatusCode:  0,

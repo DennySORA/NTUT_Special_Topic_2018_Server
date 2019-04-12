@@ -15,6 +15,8 @@ func ExaminationCreateAccount(AccountIDPW Base.NewAccountIDPw, User Base.NewAcco
 		return &Base.CreateReturn{Status: Base.SelfErrors(number)}, nil
 	} else if MongoDB.DBAccountHas(AccountIDPW.AccountID) == true {
 		return &Base.CreateReturn{Status: Base.SelfErrors(2)}, nil
+	} else if PasswordStrong(AccountIDPW.Password) == false {
+		return &Base.CreateReturn{Status: Base.SelfErrors(10)}, nil
 	} else {
 		return MongoDB.DBCreateAccount(AccountIDPW, User), nil
 	}

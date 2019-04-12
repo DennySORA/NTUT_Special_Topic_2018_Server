@@ -3,6 +3,7 @@ package Controller
 import (
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 // ===========================================================[RoutineInspection]
@@ -15,4 +16,20 @@ func RoutineInspection(Account string, Other string) (bool, int) {
 	} else {
 		return true, 0
 	}
+}
+
+func PasswordStrong(password string) bool {
+	var number, upper, lower bool
+	for _, i := range password {
+		switch {
+		case unicode.IsNumber(i):
+			number = true
+		case unicode.IsUpper(i):
+			upper = true
+		case unicode.IsLower(i):
+			lower = true
+		default:
+		}
+	}
+	return number && upper && lower && len(password) >= 8 && len(password) <= (15)
 }
