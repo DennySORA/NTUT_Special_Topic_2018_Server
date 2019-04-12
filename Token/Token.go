@@ -74,7 +74,6 @@ func (t *TokenSet) GetToken(account string, types string, setInvalidTime int64) 
 func (t *TokenSet) EqualToekn(token string, types string) bool {
 	tokenBox := t.SwitchToken(types)
 	information, ok := tokenBox[token]
-	fmt.Println(tokenBox)
 	// --------------------------------------------------------
 	if ok == false {
 		return false
@@ -89,7 +88,6 @@ func (t *TokenSet) EqualToekn(token string, types string) bool {
 func (t *TokenSet) EqualToeknGetAccount(token string, types string) (string, bool) {
 	tokenBox := t.SwitchToken(types)
 	information, ok := tokenBox[token]
-	fmt.Println(tokenBox)
 	// --------------------------------------------------------
 	if ok == false {
 		return "", false
