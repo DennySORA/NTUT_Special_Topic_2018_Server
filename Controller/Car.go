@@ -3,6 +3,7 @@ package Controller
 import (
 	"SORA/Base"
 	"SORA/MongoDB"
+	TokenBox "SORA/Token"
 )
 
 // ============================================[GetCarID]
@@ -27,13 +28,17 @@ func ExaminationGetTemporarilyToken(Certification Base.InputCertification) (*Bas
 	Ok, number := RoutineInspection(Certification.Account, Certification.Token)
 	if Ok == false {
 		return &Base.TemporarilyTokenData{Status: Base.SelfErrors(number)}, nil
-	} else if MongoDB.TokenCheck(Certification.Account, Certification.Token, 1) == false {
+	} else if TokenBox.Token.EqualToekn(Certification.Token, "Account") == false {
 		return &Base.TemporarilyTokenData{Status: Base.SelfErrors(6)}, nil
 	} else {
-		return &Base.TemporarilyTokenData{
-			Status:   Base.SelfSuccess(3),
-			Token:    MongoDB.GetAccountToken(Certification.Account, "", 2),
-			GetTimes: MongoDB.GetUTCTime()}, nil
+		if token, ok := TokenBox.Token.GetToken(Certification.Account, "Certification", 30); !ok {
+			return &Base.TemporarilyTokenData{Status: Base.SelfErrors(9)}, nil
+		} else {
+			return &Base.TemporarilyTokenData{
+				Status:   Base.SelfSuccess(3),
+				Token:    token,
+				GetTimes: MongoDB.GetUTCTime()}, nil
+		}
 	}
 }
 
@@ -42,7 +47,7 @@ func ExaminationAddCarID(InputCarNews Base.CarNews) (*Base.CarIDReturn, error) {
 	Ok, number := RoutineInspection(InputCarNews.ID, InputCarNews.TemporarilyToken)
 	if Ok == false {
 		return &Base.CarIDReturn{Status: Base.SelfErrors(number)}, nil
-	} else if MongoDB.TokenCheck(InputCarNews.ID, InputCarNews.TemporarilyToken, 2) == false {
+	} else if TokenBox.Token.EqualToekn(InputCarNews.TemporarilyToken, "Certification") == false {
 		return &Base.CarIDReturn{Status: Base.SelfErrors(6)}, nil
 	} else {
 		Token, Status := MongoDB.DBAddCarID(InputCarNews.ID, InputCarNews.CarID, InputCarNews.CarName)

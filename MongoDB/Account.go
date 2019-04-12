@@ -2,6 +2,7 @@ package MongoDB
 
 import (
 	"SORA/Base"
+	TokenBox "SORA/Token"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -46,7 +47,10 @@ func DBLogIn(Account string, Password string, Information Base.Logformation) *Ba
 	if err := Collection.Find(bson.M{"Accountid": Account, "Password": GetSHAString(Password)}).One(&result); err != nil {
 		return &Base.LogInToken{Status: Base.SelfErrors(4)}
 	} else {
-		ReturnData := ConverLogInToken(Account, 1)
+		ReturnData, ok := ConverLogInToken(Account, 1)
+		if !ok {
+			return &Base.LogInToken{Status: Base.SelfErrors(9)}
+		}
 		// -------------------------------------
 		Collection := Base.DBCol.C("User")
 		// ========================================
@@ -71,7 +75,7 @@ func DBLogIn(Account string, Password string, Information Base.Logformation) *Ba
 // ============================================[LogOut]
 
 func DBLogOut(Account string, Token string, Information Base.Logformation) *Base.StatusData {
-	Invalid := TokenInvalid(Account, Token, 1)
+	Invalid := TokenBox.Token.RemoveToken(Token, "Account")
 	if Invalid == false {
 		returnData := Base.SelfErrors(8)
 		return &returnData

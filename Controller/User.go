@@ -3,6 +3,7 @@ package Controller
 import (
 	"SORA/Base"
 	"SORA/MongoDB"
+	TokenBox "SORA/Token"
 )
 
 // ============================================[GetUser]
@@ -13,7 +14,7 @@ func ExaminationGetUser(Certification Base.InputCertification, GetHistorysNumber
 		return &Base.Users{Status: Base.SelfErrors(number)}, nil
 	} else if MongoDB.DBAccountHas(Certification.Account) == false {
 		return &Base.Users{Status: Base.SelfErrors(5)}, nil
-	} else if MongoDB.TokenCheck(Certification.Account, Certification.Token, 1) == false {
+	} else if TokenBox.Token.EqualToekn(Certification.Token, "Account") == false {
 		return &Base.Users{Status: Base.SelfErrors(6)}, nil
 	}
 	Data, Status := MongoDB.DBGetUser(Certification.Account, Certification.Token, GetHistorysNumber)
@@ -30,7 +31,7 @@ func ExaminationUpdateUser(Certification Base.InputCertification, User Base.NewA
 		return &Base.CreateReturn{Status: Base.SelfErrors(number)}, nil
 	} else if MongoDB.DBAccountHas(Certification.Account) == false {
 		return &Base.CreateReturn{Status: Base.SelfErrors(5)}, nil
-	} else if MongoDB.TokenCheck(Certification.Account, Certification.Token, 1) == false {
+	} else if TokenBox.Token.EqualToekn(Certification.Token, "Account") == false {
 		return &Base.CreateReturn{Status: Base.SelfErrors(6)}, nil
 	} else {
 		return MongoDB.DBUpdateUser(Certification.Account, User), nil

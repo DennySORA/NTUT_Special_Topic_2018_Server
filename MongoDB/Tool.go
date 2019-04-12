@@ -2,6 +2,7 @@ package MongoDB
 
 import (
 	"SORA/Base"
+	TokenBox "SORA/Token"
 	"encoding/hex"
 	"strconv"
 	"time"
@@ -54,12 +55,16 @@ func ConvertRegisters(AccountIDPW Base.NewAccountIDPw, Oid bson.ObjectId) bson.M
 	}
 }
 
-func ConverLogInToken(Account string, level int) Base.LogInToken {
-	return Base.LogInToken{
-		Status:       Base.SelfSuccess(2),
-		GetTimes:     GetUTCTime(),
-		AccountToken: GetAccountToken(Account, strconv.Itoa(level), 1),
-		AccountID:    Account,
+func ConverLogInToken(Account string, level int) (Base.LogInToken, bool) {
+	if toekn, ok := TokenBox.Token.GetToken(Account, "Account", 0); !ok {
+		return Base.LogInToken{}, false
+	} else {
+		return Base.LogInToken{
+			Status:       Base.SelfSuccess(2),
+			GetTimes:     GetUTCTime(),
+			AccountToken: toekn,
+			AccountID:    Account,
+		}, true
 	}
 }
 
