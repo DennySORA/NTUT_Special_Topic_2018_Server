@@ -1,6 +1,7 @@
 package Socket
 
 import (
+	TokenBox "SORA/Token"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -21,6 +22,9 @@ func LinkSocket(w http.ResponseWriter, r *http.Request) {
 	var idName string
 	if getID, ok := r.URL.Query()["ID"]; !ok {
 		w.Write([]byte("ERROR"))
+		return
+	} else if !TokenBox.Token.EqualToekn(getID[0], "Car") {
+		w.Write([]byte("Not ID"))
 		return
 	} else {
 		idName = getID[0]

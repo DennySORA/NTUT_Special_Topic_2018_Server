@@ -18,4 +18,4 @@ const AccountSetTime int64 = 60 * 60 * 24
 
 const TokenCheckTime time.Duration = 5 * time.Second
 
-const TokenTime = 10
+const TokenTime = 30
