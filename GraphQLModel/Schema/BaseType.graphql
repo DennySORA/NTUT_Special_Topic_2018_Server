@@ -33,14 +33,11 @@ type Historys {
   Types: Int!
   Device: String!
 }
-input Platforms {
-  Type: String!
-  Device: String!
-}
 # ---------------------------------
 # ============================================[Account]
 input Logformation {
-  Platform: Platforms!
+  Type: String!
+  Device: String!
 }
 type LogInToken {
   Status: StatusData!
@@ -105,21 +102,7 @@ input NewAccountUser {
   Country: String!
   Number: String!
 }
-# ---------------------------------
-input AccountPW {
-  Password: String!
-}
-input InputCertification {
-  Token: String!
-  Account: String!
-}
 # ============================================[CarID]
-input CarNews {
-  ID: String!
-  CarID: String!
-  CarName: String!
-  TemporarilyToken: String!
-}
 input NewCarName {
   ID: String!
   CarID: String!
@@ -127,9 +110,8 @@ input NewCarName {
 }
 type CarIDReturn {
   Status: StatusData!
-  ID: String!
-  CarID: String!
-  Token: String!
+  Account: String!
+  CarToken: String!
 }
 # ============================================[Status]
 # ------------------------------------[Monitor]
