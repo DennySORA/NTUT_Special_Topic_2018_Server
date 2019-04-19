@@ -2,6 +2,8 @@
 
 package Base
 
+var ServerStop chan int
+
 type Accesses struct {
 	Certification bool          `json:"Certification"`
 	PermitTime    string        `json:"PermitTime"`
