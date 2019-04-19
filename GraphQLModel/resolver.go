@@ -26,7 +26,7 @@ func (r *mutationResolver) CreateAccount(ctx context.Context, accountIDPw Base.N
 	return Controller.ExaminationCreateAccount(accountIDPw, user)
 }
 func (r *mutationResolver) ChangePassword(ctx context.Context, token string, oldPw string, newPw string) (*Base.CreateReturn, error) {
-	panic("not implemented")
+	return Controller.ExaminationChangePassword(token, oldPw, newPw)
 }
 func (r *mutationResolver) AddCarID(ctx context.Context, accountID string, carName string, temporarilyToken string) (*Base.CarIDReturn, error) {
 	return Controller.ExaminationAddCarID(accountID, carName, temporarilyToken)

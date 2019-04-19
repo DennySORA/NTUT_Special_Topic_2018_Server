@@ -111,6 +111,18 @@ func (t *TokenSet) RemoveToken(token string, types string) bool {
 	}
 }
 
+func (t *TokenSet) RemoveTokenAll(Account string, types string) bool {
+	tokenBox := t.SwitchToken(types)
+	for key, val := range tokenBox {
+		if val.Account == Account {
+			if t.RemoveToken(key, types) == false {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func (t *TokenSet) CalculationTokenNumber(types, account string, number int) {
 	Temp := AccountInformation{
 		AccountNumber:       t.Account[account].AccountNumber,

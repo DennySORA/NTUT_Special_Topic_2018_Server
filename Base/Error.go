@@ -51,6 +51,16 @@ func SelfErrors(Number int) StatusData {
 			StatusCode:  -10,
 			Description: "Strong Password Not Good.",
 		}
+	} else if Number == 11 {
+		return StatusData{
+			StatusCode:  -11,
+			Description: "Password is error.",
+		}
+	} else if Number == 12 {
+		return StatusData{
+			StatusCode:  -12,
+			Description: "Password is same.",
+		}
 	} else {
 		return StatusData{
 			StatusCode:  0,

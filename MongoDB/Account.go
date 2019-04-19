@@ -113,3 +113,21 @@ func DBAccountHas(ID string) bool {
 		return false
 	}
 }
+
+// ============================================[ChangePassword]
+
+func DBChangePassword(accountID string, oldPw string, newPw string) *Base.CreateReturn {
+	Collection := Base.DBCol.C("Register")
+	result := bson.M{}
+	if err := Collection.Find(bson.M{"Accountid": accountID, "Password": GetSHAString(oldPw)}).One(&result); err != nil {
+		return &Base.CreateReturn{Status: Base.SelfErrors(11)}
+	} else {
+		pw := bson.M{"$set": bson.M{"Password": GetSHAString(newPw)}}
+		if err := Collection.Update(bson.M{"Accountid": accountID}, pw); err != nil {
+			return &Base.CreateReturn{Status: Base.SelfErrors(0)}
+		} else {
+			TokenBox.Token.RemoveTokenAll(accountID, "Account")
+			return &Base.CreateReturn{Status: Base.SelfSuccess(8), AccountID: accountID}
+		}
+	}
+}

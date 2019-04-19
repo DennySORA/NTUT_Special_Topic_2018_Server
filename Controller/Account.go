@@ -61,3 +61,19 @@ func ExaminationCheckAccountHas(accountID string) (*Base.AccountHas, error) {
 		return &Base.AccountHas{Status: Base.SelfSuccess(6), Has: true}, nil
 	}
 }
+
+// ============================================[ChangePassword]
+
+func ExaminationChangePassword(token string, oldPw string, newPw string) (*Base.CreateReturn, error) {
+	if len(strings.Trim(token, " ")) == 0 {
+		return &Base.CreateReturn{Status: Base.SelfErrors(1)}, nil
+	} else if accountID, ok := TokenBox.Token.EqualToeknGetAccount(token, "Account"); !ok {
+		return &Base.CreateReturn{Status: Base.SelfErrors(6)}, nil
+	} else if PasswordStrong(newPw) == false {
+		return &Base.CreateReturn{Status: Base.SelfErrors(10)}, nil
+	} else if oldPw == newPw {
+		return &Base.CreateReturn{Status: Base.SelfErrors(12)}, nil
+	} else {
+		return MongoDB.DBChangePassword(accountID, oldPw, newPw), nil
+	}
+}
