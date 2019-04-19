@@ -16,6 +16,7 @@ func Start() {
 	if err := Base.InitMongoDB(); err != nil {
 		Base.Error.Panicln(err)
 	}
+	Base.InitCarToken()
 	stopArg = append(stopArg, Base.TraceInit(cherr))
 	go Server.StartGraphQLServer()
 	stop := make(chan os.Signal, 1)

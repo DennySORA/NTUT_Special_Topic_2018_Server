@@ -9,7 +9,7 @@ import (
 
 // ============================================[AddCarID]
 func DBAddCarID(Account string, CarName string) (string, int) {
-	Token, ok := TokenBox.Token.GetToken(Account, "Car", 0)
+	Token, ok := TokenBox.Token.GetToken(Account, "Car", -1)
 	Collection := Base.DBCol.C("User")
 	// ========================================
 	selects := bson.M{"Email": Account}
