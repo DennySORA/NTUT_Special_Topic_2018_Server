@@ -1,5 +1,8 @@
 # NTUT_Special_Topic_2018_Server
 
+Test url  : https://testapi.dennysora.com:8081
+Test Data : https://hackmd.io/y9bGnuw9Qy-L4l6q-yFmOA
+
 ## Introduction
 
 This Back-End Server use technology the following:
