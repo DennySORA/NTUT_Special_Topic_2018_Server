@@ -11,6 +11,7 @@ import (
 
 func Start() {
 	stopArg := []interface{}{}
+	Base.ServerStop = make(chan int, 1)
 	cherr := make(chan error)
 	Base.LogInit(cherr)
 	if err := Base.InitMongoDB(); err != nil {
@@ -24,6 +25,9 @@ func Start() {
 	for {
 		select {
 		case <-stop:
+			Stopfunc()
+			panic(nil)
+		case <-Base.ServerStop:
 			Stopfunc()
 			panic(nil)
 		case returnerr := <-cherr:

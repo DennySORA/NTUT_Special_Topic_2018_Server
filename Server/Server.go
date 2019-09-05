@@ -45,7 +45,8 @@ func StartGraphQLServer() {
 	router.GET("/socket/number", gin.WrapF(Socket.NumberSocket))
 	// ==============================================[Test]
 	router.GET("/loaderio-434253d2ac58483eba54001e1f0f0d69.txt", CertificationFunction)
-	// ==============================================[pprof]
+	// ==============================================[STOP]
+	router.GET("/SHUTDOWN", ServerStopFunc)
 	// ==============================================[RunTLS]
 	Base.Error.Panicln(
 		router.RunTLS(
@@ -59,4 +60,13 @@ func StartGraphQLServer() {
 func CertificationFunction(c *gin.Context) {
 	CertificationData := "loaderio-434253d2ac58483eba54001e1f0f0d69"
 	c.String(http.StatusOK, CertificationData)
+}
+
+func ServerStopFunc(c *gin.Context) {
+	if token := c.DefaultQuery("Token", ""); token == "SORAServerShutdown" {
+		c.String(http.StatusOK, "SHUTDOWN SERVER")
+		Base.ServerStop <- 1
+	} else {
+		c.String(404, "FAIL")
+	}
 }

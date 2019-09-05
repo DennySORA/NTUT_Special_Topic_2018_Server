@@ -47,7 +47,7 @@ func ExaminationAddCarID(accountID string, carName string, temporarilyToken stri
 	Ok, number := RoutineInspection(accountID, temporarilyToken)
 	if Ok == false {
 		return &Base.CarIDReturn{Status: Base.SelfErrors(number)}, nil
-	} else if TokenBox.Token.EqualToekn(temporarilyToken, "Certification") == false {
+	} else if TokenBox.Token.EqualToeknAccount(temporarilyToken, accountID, "Certification") == false {
 		return &Base.CarIDReturn{Status: Base.SelfErrors(6)}, nil
 	} else {
 		Token, Status := MongoDB.DBAddCarID(accountID, carName)

@@ -71,6 +71,22 @@ func (t *TokenSet) GetToken(account string, types string, setInvalidTime int64) 
 	return Token, true
 }
 
+func (t *TokenSet) EqualToeknAccount(token, Account, types string) bool {
+	tokenBox := t.SwitchToken(types)
+	information, ok := tokenBox[token]
+	// --------------------------------------------------------
+	if ok == false {
+		return false
+	} else if information.Account != Account {
+		return false
+	} else if information.InvalidTime != -1 && information.GetTime+information.InvalidTime < time.Now().Unix() {
+		t.RemoveToken(token, types)
+		return false
+	} else {
+		return true
+	}
+}
+
 func (t *TokenSet) EqualToekn(token string, types string) bool {
 	tokenBox := t.SwitchToken(types)
 	information, ok := tokenBox[token]
